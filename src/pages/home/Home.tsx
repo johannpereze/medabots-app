@@ -1,3 +1,5 @@
+import MedabotSprite from "../../components/medabotSprite/MedabotSprite";
+
 export default function Home() {
-  return <h1>Dashboard</h1>;
+  return <MedabotSprite scale={4} />;
 }

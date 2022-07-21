@@ -14,7 +14,7 @@ export default function App() {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <BrowserRouter basename="/react">
+        <BrowserRouter basename="/medabots-app">
           <ThemeManager>
             <SnackbarProvider>
               <AppRouter />
