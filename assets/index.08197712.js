@@ -392,7 +392,7 @@ attempted value: ${o}
 
         height: ${p[g].height*e}px;
         width: ${p[g].width*e}px;
-        background: url("../../src/static/images/mainSprites.png")
+        background: url("https://raw.githubusercontent.com/johannpereze/medabots-app/main/src/static/images/mainSprites.png")
           ${p[g].x*e}px
           ${p[g].y*e}px;
         image-rendering: pixelated;
