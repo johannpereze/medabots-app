@@ -11,7 +11,7 @@
     "format": "prettier --write .",
     "lint": "eslint --fix . --ext .ts,.tsx",
     "predeploy": "yarn build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "@emotion/react": "11.9.3",
