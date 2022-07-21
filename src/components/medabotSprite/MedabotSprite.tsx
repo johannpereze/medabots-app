@@ -223,7 +223,7 @@ export default function MedabotSprite({ scale = 1 }: MedabotSpriteProps) {
 
         height: ${_spritePosition[key as keyof Sprite].height * scale}px;
         width: ${_spritePosition[key as keyof Sprite].width * scale}px;
-        background: url("../../src/static/images/mainSprites.png")
+        background: url("https://raw.githubusercontent.com/johannpereze/medabots-app/main/src/static/images/mainSprites.png")
           ${_spritePosition[key as keyof Sprite].x * scale}px
           ${_spritePosition[key as keyof Sprite].y * scale}px;
         image-rendering: pixelated;
