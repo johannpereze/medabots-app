@@ -1,0 +1,20 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-medabotsapp-dev-222109-authRole",
+      "UnauthRoleArn": "arn:aws:iam::069226990750:role/amplify-medabotsapp-dev-222109-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::069226990750:role/amplify-medabotsapp-dev-222109-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-medabotsapp-dev-222109-deployment",
+      "UnauthRoleName": "amplify-medabotsapp-dev-222109-unauthRole",
+      "StackName": "amplify-medabotsapp-dev-222109",
+      "StackId": "arn:aws:cloudformation:us-east-1:069226990750:stack/amplify-medabotsapp-dev-222109/55de7140-096d-11ed-8eb0-0e9863ae468d",
+      "AmplifyAppId": "d1wwi9xqi3ny7n"
+    },
+    "categories": {
+      "auth": {
+        "medabotsapp7c8b2a9f": {}
+      }
+    }
+  }
+}

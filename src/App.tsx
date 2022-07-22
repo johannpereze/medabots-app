@@ -4,11 +4,11 @@ import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistor, store } from "./app/store";
-import currentConfig from "./aws/AmplifyConfig";
+import awsmobile from "./aws-exports";
 import ThemeManager from "./components/managers/themeManager/ThemeManager";
 import AppRouter from "./routers/AppRouter";
 
-Amplify.configure(currentConfig);
+Amplify.configure(awsmobile);
 
 export default function App() {
   return (

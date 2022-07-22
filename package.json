@@ -3,7 +3,6 @@
   "homepage": "https://johannpereze.github.io/medabots-app",
   "private": true,
   "version": "0.0.0",
-  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build --base=./",
