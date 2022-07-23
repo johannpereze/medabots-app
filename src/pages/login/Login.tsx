@@ -1,8 +1,20 @@
-import { Alert, Box, Grid, Link, Paper, Typography } from "@mui/material";
+import { CognitoHostedUIIdentityProvider } from "@aws-amplify/auth";
+import {
+  Alert,
+  Box,
+  Button,
+  Grid,
+  Link,
+  Paper,
+  Typography,
+} from "@mui/material";
+import { Auth, Hub } from "aws-amplify";
 import { useSnackbar } from "notistack";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
+
 import confirmSignUp, { ConfirmCode } from "../../auth/confirmSignUp";
 import signIn, { LoginValues, SetSubmitting } from "../../auth/signIn";
 import signUp, { UserAttributes } from "../../auth/signUp";
@@ -25,6 +37,35 @@ export default function Login({ step }: LoginProps) {
 
   const userEmail = useAppSelector((state) => state.auth.email);
   const confirmedEmil = useAppSelector((state) => state.auth.confirmed_email);
+
+  /*
+   * Social Auth
+   */
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const unsubscribe = Hub.listen("auth", ({ payload: { event, data } }) => {
+      switch (event) {
+        case "signIn":
+          setUser(data);
+          break;
+        case "signOut":
+          setUser(null);
+          break;
+      }
+    });
+
+    Auth.currentAuthenticatedUser()
+      .then((currentUser) => setUser(currentUser))
+      .catch(() => console.log("Not signed in"));
+
+    return unsubscribe;
+  }, []);
+
+  console.log(user);
+
+  const handleGoogleLogin = () =>
+    Auth.federatedSignIn({ provider: CognitoHostedUIIdentityProvider.Google });
 
   const signUpSubmit = async ({
     email,
@@ -143,6 +184,7 @@ export default function Login({ step }: LoginProps) {
               </Link>
             </Typography>
           )}
+          <Button onClick={handleGoogleLogin}>Google</Button>
         </Paper>
       </Grid>
       <Grid
