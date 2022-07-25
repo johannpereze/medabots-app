@@ -3,7 +3,6 @@ import { TFunction } from "react-i18next";
 import { NavigateFunction } from "react-router-dom";
 import { AppDispatch } from "../app/store";
 import errorHandler, { EnqueueSnackbar } from "../hooks/errorHandler";
-import { setConfirEmail } from "./authSlice";
 
 export interface ConfirmCode {
   confirmCode: string;
@@ -19,7 +18,7 @@ const confirmSignUp = async (
 ) => {
   try {
     await Auth.confirmSignUp(userEmail, confirmCode);
-    dispatch(setConfirEmail(userEmail));
+    // dispatch(setConfirEmail(userEmail));
     navigate("/");
   } catch (error) {
     errorHandler(error, enqueueSnackbar, t);

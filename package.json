@@ -21,6 +21,7 @@
     "@mui/material": "^5.9.1",
     "@reduxjs/toolkit": "^1.8.3",
     "aws-amplify": "^4.3.27",
+    "firebase": "^9.9.1",
     "formik": "^2.2.9",
     "gh-pages": "^4.0.0",
     "i18next": "^21.8.14",

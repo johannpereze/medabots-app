@@ -1,9 +1,10 @@
-import { Auth } from "aws-amplify";
+import { onAuthStateChanged } from "firebase/auth";
 import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { setUser } from "../auth/authSlice";
+import { login, logout } from "../auth/authSlice";
 import Backdrop from "../components/backdrop/Backdrop";
+import { FirebaseAuth } from "../firebase/config";
 
 interface PrivateRouteProps {
   children: JSX.Element;
@@ -11,26 +12,15 @@ interface PrivateRouteProps {
 
 export default function PrivateRoute({ children }: PrivateRouteProps) {
   const [checkingAuth, setCheckingAuth] = useState(true);
+  const userId = useAppSelector((state) => state.auth.uid);
   const dispatch = useAppDispatch();
-  const userId = useAppSelector((state) => state.auth.user_id);
 
   const getCurrentUser = async () => {
     try {
-      const user = await Auth.currentAuthenticatedUser();
-      const {
-        email,
-        family_name: familyName,
-        given_name: givenName,
-        sub,
-      } = user.attributes;
-      dispatch(
-        setUser({
-          user_id: sub,
-          email,
-          family_name: familyName,
-          given_name: givenName,
-        })
-      );
+      onAuthStateChanged(FirebaseAuth, async (user) => {
+        if (!user) return dispatch(logout({ errorMessage: null }));
+        dispatch(login(user));
+      });
       setCheckingAuth(false);
     } catch (e) {
       setCheckingAuth(false);
@@ -44,5 +34,5 @@ export default function PrivateRoute({ children }: PrivateRouteProps) {
   if (checkingAuth) {
     return <Backdrop />;
   }
-  return userId === "" ? <Navigate to="/login" /> : children;
+  return userId === null ? <Navigate to="/login" /> : children;
 }

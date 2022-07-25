@@ -20,6 +20,7 @@ const es = {
     },
     login: {
       log_in: "Iniciar sesión",
+      log_in_with_google: "Iniciar sesión con Google",
       create_account: "Crear cuenta",
       not_registered: "Sin registrarte?",
       create_an_account: "Crear una cuenta.",

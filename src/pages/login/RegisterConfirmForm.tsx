@@ -23,7 +23,7 @@ export default function RegisterConfirmForm({
   const { t } = useTranslation();
   const { enqueueSnackbar } = useSnackbar();
 
-  const userEmail = useAppSelector((state) => state.auth.email);
+  const userEmail = useAppSelector((state) => state.auth.displayName);
 
   const validationSchema = yup.object({
     confirmCode: yup
@@ -46,7 +46,7 @@ export default function RegisterConfirmForm({
   });
 
   const handleResendConfirmation = async () => {
-    resendAuthConfirmation(userEmail, enqueueSnackbar, t);
+    resendAuthConfirmation(userEmail || "", enqueueSnackbar, t);
     setDisabled(true);
     setCodeSended(true);
   };

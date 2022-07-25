@@ -3,7 +3,7 @@ import { useAppSelector } from "../app/hooks";
 import Login from "../pages/login/Login";
 
 export default function AuthRouter() {
-  const userEmail = useAppSelector((state) => state.auth.email);
+  const status = useAppSelector((state) => state.auth.status);
   return (
     <Routes>
       <Route path="register" element={<Login step="register" />} />
@@ -13,8 +13,9 @@ export default function AuthRouter() {
       />
       <Route
         path="confirmation-code"
+        // TODO: This is for the email to be used again in login. probably not working
         element={
-          userEmail === "" ? (
+          status === "not_authenticated" ? (
             <Navigate to="/login" />
           ) : (
             <Login step="confirmationCode" />

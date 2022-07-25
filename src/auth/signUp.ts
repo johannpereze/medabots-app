@@ -1,10 +1,9 @@
-import { Auth } from "aws-amplify";
 import { TFunction } from "react-i18next";
 import { NavigateFunction } from "react-router-dom";
 import { AppDispatch } from "../app/store";
 import errorHandler, { EnqueueSnackbar } from "../hooks/errorHandler";
-import { setUser } from "./authSlice";
 import { LoginValues } from "./signIn";
+import { startCreatingUserWithEmail } from "./thunks";
 
 export interface UserAttributes extends LoginValues {
   givenName: string;
@@ -19,20 +18,12 @@ const signUp = async (
   t: TFunction<"translation", undefined>
 ) => {
   try {
-    const { user } = await Auth.signUp({
-      username: email,
-      password,
-      attributes: {
-        given_name: givenName,
-        family_name: familyName,
-      },
-    });
-    dispatch(
-      setUser({
-        user_id: "",
-        email: user.getUsername(),
-        family_name: "",
-        given_name: "",
+    await dispatch(
+      startCreatingUserWithEmail({
+        email,
+        password,
+        // TODO: change given name to displayName
+        displayName: givenName,
       })
     );
     navigate("/login/confirmation-code");

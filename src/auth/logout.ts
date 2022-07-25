@@ -3,7 +3,6 @@ import { TFunction } from "react-i18next";
 import { NavigateFunction } from "react-router-dom";
 import { AppDispatch } from "../app/store";
 import errorHandler, { EnqueueSnackbar } from "../hooks/errorHandler";
-import { deleteUser } from "./authSlice";
 
 const logout = async (
   dispatch: AppDispatch,
@@ -13,7 +12,7 @@ const logout = async (
 ) => {
   try {
     await Auth.signOut();
-    dispatch(deleteUser());
+    // dispatch(deleteUser());
     navigate("/login");
   } catch (error) {
     errorHandler(error, enqueueSnackbar, t);

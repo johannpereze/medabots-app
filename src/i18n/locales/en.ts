@@ -60,6 +60,7 @@ const en = {
         "We will send to your inbox the instructions to reset your password",
       last_name: "Last name",
       log_in: "Log in",
+      log_in_with_google: "Log in with Google",
       name: "Name",
       not_registered: "Not registered?",
       password: "Password",

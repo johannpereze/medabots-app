@@ -4,8 +4,9 @@ import { useTranslation } from "react-i18next";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import confirmSignUp, { ConfirmCode } from "../../auth/confirmSignUp";
-import signIn, { LoginValues, SetSubmitting } from "../../auth/signIn";
+import { LoginValues } from "../../auth/signIn";
 import signUp, { UserAttributes } from "../../auth/signUp";
+import { startLoginWithEmail } from "../../auth/thunks";
 import LanguageSelector from "../../components/languageSelector/LanguageSelector";
 import ThemeSelector from "../../components/themeSelector/ThemeSelector";
 import LoginForm from "./LoginForm";
@@ -23,8 +24,9 @@ export default function Login({ step }: LoginProps) {
   const dispatch = useAppDispatch();
   const { enqueueSnackbar } = useSnackbar();
 
-  const userEmail = useAppSelector((state) => state.auth.email);
-  const confirmedEmil = useAppSelector((state) => state.auth.confirmed_email);
+  // TODO: change display name
+  const userEmail = useAppSelector((state) => state.auth.displayName);
+  const confirmedEmail = useAppSelector((state) => state.auth.displayName);
 
   const signUpSubmit = async ({
     email,
@@ -49,7 +51,7 @@ export default function Login({ step }: LoginProps) {
   const confirmSignUpSubmit = async ({ confirmCode }: ConfirmCode) => {
     confirmSignUp(
       { confirmCode },
-      userEmail,
+      userEmail || "",
       navigate,
       enqueueSnackbar,
       t,
@@ -57,18 +59,9 @@ export default function Login({ step }: LoginProps) {
     );
   };
 
-  const signInSubmit = (
-    { email, password }: LoginValues,
-    setSubmitting: SetSubmitting
-  ) => {
-    signIn(
-      { email, password },
-      dispatch,
-      navigate,
-      enqueueSnackbar,
-      t,
-      setSubmitting
-    );
+  const signInSubmit = ({ email, password }: LoginValues) => {
+    console.log("se ejecuta signInSubmit", email, password);
+    dispatch(startLoginWithEmail({ email, password }));
   };
 
   return (
@@ -88,7 +81,7 @@ export default function Login({ step }: LoginProps) {
         <Paper
           elevation={4}
           sx={{
-            width: 300,
+            width: 350,
             display: "flex",
             flexDirection: "column",
             px: 3,
@@ -96,7 +89,8 @@ export default function Login({ step }: LoginProps) {
             my: 1,
           }}
         >
-          {confirmedEmil && (
+          {/* TODO: use this error for all errors */}
+          {confirmedEmail && (
             <Alert severity="warning" sx={{ my: 2 }}>
               {t("login.for_safety_reasons_type_your_password_again_to_log_in")}
             </Alert>
@@ -112,7 +106,7 @@ export default function Login({ step }: LoginProps) {
           elevation={0}
           variant="outlined"
           sx={{
-            width: 300,
+            width: 350,
             display: "flex",
             justifyContent: "center",
             p: 2,
@@ -154,7 +148,7 @@ export default function Login({ step }: LoginProps) {
           flexDirection: "column",
         }}
       >
-        <Box sx={{ width: 300, mb: 10 }}>
+        <Box sx={{ width: 350, mb: 10 }}>
           <Grid container spacing={2}>
             <Grid item xs={6}>
               <LanguageSelector />

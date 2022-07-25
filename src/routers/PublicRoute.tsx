@@ -1,8 +1,7 @@
 import { Auth } from "aws-amplify";
 import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { setUser } from "../auth/authSlice";
+import { useAppSelector } from "../app/hooks";
 import Backdrop from "../components/backdrop/Backdrop";
 
 interface PublicRouteProps {
@@ -11,26 +10,25 @@ interface PublicRouteProps {
 
 export default function PublicRoute({ children }: PublicRouteProps) {
   const [checkingAuth, setCheckingAuth] = useState(true);
-  const dispatch = useAppDispatch();
-  const userId = useAppSelector((state) => state.auth.user_id);
+  const userId = useAppSelector((state) => state.auth.uid);
 
   const getCurrentUser = async () => {
     try {
-      const user = await Auth.currentAuthenticatedUser();
-      const {
+      await Auth.currentAuthenticatedUser();
+      /* const {
         email,
         family_name: familyName,
         given_name: givenName,
         sub,
-      } = user.attributes;
-      dispatch(
+      } = user.attributes; */
+      /* dispatch(
         setUser({
           user_id: sub,
           email,
           family_name: familyName,
           given_name: givenName,
         })
-      );
+      ); */
       setCheckingAuth(false);
     } catch (e) {
       setCheckingAuth(false);
@@ -44,5 +42,5 @@ export default function PublicRoute({ children }: PublicRouteProps) {
   if (checkingAuth) {
     return <Backdrop />;
   }
-  return userId === "" ? children : <Navigate to="/" />;
+  return userId === null ? children : <Navigate to="/" />;
 }

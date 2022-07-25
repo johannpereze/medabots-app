@@ -1,22 +1,27 @@
+import { Google } from "@mui/icons-material";
 import { LoadingButton } from "@mui/lab";
-import { Box, Link, TextField, Typography } from "@mui/material";
+import { Box, Button, Link, TextField, Typography } from "@mui/material";
 import { useFormik } from "formik";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { NavLink } from "react-router-dom";
 import * as yup from "yup";
-import { useAppSelector } from "../../app/hooks";
-import { LoginValues, SetSubmitting } from "../../auth/signIn";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { googleSignIn } from "../../auth/googleSignIn";
+import { LoginValues } from "../../auth/signIn";
 import PasswordField from "../../components/passwordField/PasswordField";
 
 interface LoginFormProps {
-  submit: (
-    { email, password }: LoginValues,
-    setSubmitting: SetSubmitting
-  ) => void;
+  submit: ({ email, password }: LoginValues) => void;
 }
 export default function LoginForm({ submit }: LoginFormProps) {
   const { t } = useTranslation();
-  const confirmedEmil = useAppSelector((state) => state.auth.confirmed_email);
+  const confirmedEmil = useAppSelector((state) => state.auth.displayName);
+  const dispatch = useAppDispatch();
+  const status = useAppSelector((state) => state.auth.status);
+
+  const isAuthenticating = useMemo(() => status === "checking", [status]);
+
   const validationSchema = yup.object({
     email: yup.string().email().required(t("errors.login.email_is_required")),
     password: yup
@@ -31,8 +36,9 @@ export default function LoginForm({ submit }: LoginFormProps) {
       password: "",
     },
     validationSchema,
-    onSubmit: (values, { setSubmitting }) => {
-      submit(values, setSubmitting);
+    onSubmit: (values) => {
+      console.log("submit", values);
+      submit(values);
     },
     validateOnBlur: true,
     validateOnMount: true,
@@ -74,6 +80,21 @@ export default function LoginForm({ submit }: LoginFormProps) {
       >
         {t("login.log_in")}
       </LoadingButton>
+      <Button
+        fullWidth
+        startIcon={<Google />}
+        disabled={isAuthenticating}
+        onClick={() => googleSignIn(dispatch)}
+        sx={{
+          textTransform: "none",
+          mt: 3,
+          color: "white",
+          backgroundColor: "#4285f4",
+        }}
+        variant="contained"
+      >
+        {t("login.log_in_with_google")}
+      </Button>
       <Typography
         sx={{ display: "flex", justifyContent: "end", mt: 2, mb: 1 }}
         variant="body2"
