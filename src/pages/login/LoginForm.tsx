@@ -4,7 +4,7 @@ import { Box, Button, Link, TextField, Typography } from "@mui/material";
 import { useFormik } from "formik";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { NavLink } from "react-router-dom";
+import { NavLink, useSearchParams } from "react-router-dom";
 import * as yup from "yup";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { googleSignIn } from "../../auth/googleSignIn";
@@ -16,8 +16,8 @@ interface LoginFormProps {
 }
 export default function LoginForm({ submit }: LoginFormProps) {
   const { t } = useTranslation();
-  const confirmedEmil = useAppSelector((state) => state.auth.displayName);
   const dispatch = useAppDispatch();
+  const [searchParams] = useSearchParams();
   const status = useAppSelector((state) => state.auth.status);
 
   const isAuthenticating = useMemo(() => status === "checking", [status]);
@@ -32,7 +32,7 @@ export default function LoginForm({ submit }: LoginFormProps) {
 
   const formik = useFormik({
     initialValues: {
-      email: confirmedEmil || "",
+      email: searchParams.get("email") || "",
       password: "",
     },
     validationSchema,

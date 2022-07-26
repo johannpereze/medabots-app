@@ -18,6 +18,7 @@ export default function PrivateRoute({ children }: PrivateRouteProps) {
   const getCurrentUser = async () => {
     try {
       onAuthStateChanged(FirebaseAuth, async (user) => {
+        console.log("user", user);
         if (!user) return dispatch(logout({ errorMessage: null }));
         dispatch(login(user));
       });

@@ -1,4 +1,13 @@
-import { Alert, Box, Grid, Link, Paper, Typography } from "@mui/material";
+import {
+  Alert,
+  Box,
+  Button,
+  Grid,
+  Link,
+  Paper,
+  Typography,
+} from "@mui/material";
+import { sendEmailVerification } from "firebase/auth";
 import { useSnackbar } from "notistack";
 import { useTranslation } from "react-i18next";
 import { NavLink, useNavigate } from "react-router-dom";
@@ -26,7 +35,8 @@ export default function Login({ step }: LoginProps) {
 
   // TODO: change display name
   const userEmail = useAppSelector((state) => state.auth.displayName);
-  const confirmedEmail = useAppSelector((state) => state.auth.displayName);
+  const errorMessage = useAppSelector((state) => state.auth.errorMessage);
+  const unverifiedUser = useAppSelector((state) => state.auth.unverifiedUser);
 
   const signUpSubmit = async ({
     email,
@@ -57,6 +67,10 @@ export default function Login({ step }: LoginProps) {
       t,
       dispatch
     );
+  };
+
+  const handleResend = async () => {
+    if (unverifiedUser) sendEmailVerification(unverifiedUser);
   };
 
   const signInSubmit = ({ email, password }: LoginValues) => {
@@ -90,9 +104,9 @@ export default function Login({ step }: LoginProps) {
           }}
         >
           {/* TODO: use this error for all errors */}
-          {confirmedEmail && (
+          {errorMessage && (
             <Alert severity="warning" sx={{ my: 2 }}>
-              {t("login.for_safety_reasons_type_your_password_again_to_log_in")}
+              {t(`errors.${errorMessage}`)}
             </Alert>
           )}
           {step === "register" && <RegisterForm submit={signUpSubmit} />}
@@ -101,6 +115,11 @@ export default function Login({ step }: LoginProps) {
             <RegisterConfirmForm submit={confirmSignUpSubmit} />
           )}
           {step === "login" && <LoginForm submit={signInSubmit} />}
+          {unverifiedUser && (
+            <Button onClick={handleResend}>
+              {t("login.resend_confirmation_code")}
+            </Button>
+          )}
         </Paper>
         <Paper
           elevation={0}

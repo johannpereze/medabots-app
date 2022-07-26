@@ -12,6 +12,7 @@ const en = {
       user_settings: "User settings",
     },
     errors: {
+      email_not_verified: "Email not verified",
       login: {
         confirmation_code_is_required: "Confirmation code is required",
         confirmation_code_should_be_a_6_digits_number:
@@ -69,7 +70,7 @@ const en = {
         "Past here the code we sent to your registered email",
       recover_password: "Recover password",
       repeat_password: "Repeat password",
-      send_code_again: "Send code again",
+      resend_confirmation_code: "Resend confirmation code",
       sign_out: "Sign out",
       user_name: "User name",
       username: "Username",

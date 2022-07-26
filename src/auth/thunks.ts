@@ -5,7 +5,12 @@ import {
   signInWithEmail,
   signInWithGoole,
 } from "../firebase/providers";
-import { checkingCredentials, login, logout } from "./authSlice";
+import {
+  checkingCredentials,
+  login,
+  logout,
+  setUnverifiedUser,
+} from "./authSlice";
 
 // TODO Refactor this with create async thunk
 export const checkingAuthentication = () => {
@@ -39,7 +44,8 @@ export const startCreatingUserWithEmail = ({
       displayName,
     });
     if (!ok) return dispatch(logout({ errorMessage }));
-    dispatch(login({ uid, photoURL, displayName, email }));
+    return { uid, photoURL, displayName, email };
+    // dispatch(login({ uid, photoURL, displayName, email })); TODO: I dont think I need this
   };
 };
 
@@ -53,11 +59,18 @@ any) => {
     console.log("Justo antes de ejecutar el checkingCredentials");
     dispatch(checkingCredentials());
 
-    const { ok, uid, photoURL, errorMessage } = await signInWithEmail({
-      email,
-      password,
-    });
+    const { ok, uid, photoURL, errorMessage, emailVerified, user } =
+      await signInWithEmail({
+        email,
+        password,
+      });
     if (!ok) return dispatch(logout({ errorMessage }));
+    if (!emailVerified) {
+      // TODO: make sure unverified users are not logged to the app in any way (the private routes are protected)
+      dispatch(logout({ errorMessage: "email_not_verified" }));
+      dispatch(setUnverifiedUser({ user }));
+      return;
+    }
     console.log({ uid, photoURL, email });
     dispatch(login({ uid, photoURL, email }));
   };

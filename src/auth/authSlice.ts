@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { User } from "firebase/auth";
 
 export interface AuthState {
   status: "checking" | "not_authenticated" | "authenticated";
@@ -6,6 +7,7 @@ export interface AuthState {
   displayName: string | null;
   photoURL: string | null;
   errorMessage: string | null;
+  unverifiedUser?: User;
 }
 
 const initialState: AuthState = {
@@ -35,9 +37,13 @@ export const authSlice = createSlice({
       ...state,
       status: "checking",
     }),
+    setUnverifiedUser: (state, { payload }) => {
+      state.unverifiedUser = payload.user;
+    },
   },
 });
 
-export const { login, logout, checkingCredentials } = authSlice.actions;
+export const { login, logout, checkingCredentials, setUnverifiedUser } =
+  authSlice.actions;
 
 export default authSlice.reducer;

@@ -26,7 +26,7 @@ const signUp = async (
         displayName: givenName,
       })
     );
-    navigate("/login/confirmation-code");
+    navigate(`/login?email=${encodeURIComponent(email)}`);
   } catch (error) {
     errorHandler(error, enqueueSnackbar, t);
   }

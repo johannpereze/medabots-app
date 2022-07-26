@@ -1,6 +1,7 @@
 import {
   createUserWithEmailAndPassword,
   GoogleAuthProvider,
+  sendEmailVerification,
   signInWithEmailAndPassword,
   signInWithPopup,
   updateProfile,
@@ -32,10 +33,13 @@ export const registerWithEmail = async ({
       email,
       password
     );
+    console.log("resp", resp);
+
+    await sendEmailVerification(resp.user);
     const { uid, photoURL } = resp.user;
     await updateProfile(resp.user, { displayName });
     console.log(uid, photoURL);
-    return { ok: true, uid, photoURL, email, displayName };
+    return { ok: true, uid, photoURL, email, displayName, user: resp.user };
   } catch (e) {
     return { ok: false, errorMessage: e };
   }
@@ -49,8 +53,16 @@ export const signInWithEmail = async ({ email, password }: any) => {
       password
     );
     console.log("signInWithEmailAndPassword resp", resp);
-    const { uid, photoURL, displayName } = resp.user;
-    return { ok: true, uid, photoURL, email, displayName };
+    const { uid, photoURL, displayName, emailVerified } = resp.user;
+    return {
+      ok: true,
+      uid,
+      photoURL,
+      email,
+      displayName,
+      emailVerified,
+      user: resp.user,
+    };
   } catch (e) {
     return { ok: false, errorMessage: e };
   }
