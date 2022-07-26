@@ -76,6 +76,9 @@ const en = {
       username: "Username",
       wait_for_resend: "Wait for resend:",
     },
+    medabots: {
+      medabot_creation: "Medabot creation",
+    },
   },
 };
 

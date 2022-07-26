@@ -1,4 +1,3 @@
-import BadgeIcon from "@mui/icons-material/Badge";
 import LogoutIcon from "@mui/icons-material/Logout";
 import {
   Box,
@@ -15,7 +14,18 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { RootState } from "../../app/store";
 import toggleMenuDrawer from "../../helpers/toggleMenuDrawer";
 
-export default function SwipeableTemporaryDrawer() {
+export interface DrawerItem {
+  name: string;
+  label: string;
+  icon: JSX.Element;
+  onClick: () => void;
+}
+
+interface MenuDrawerProps {
+  drawerItems: DrawerItem[];
+}
+
+export default function MenuDrawer({ drawerItems }: MenuDrawerProps) {
   const { t } = useTranslation();
   const { showDrawer } = useAppSelector((state: RootState) => state.header);
   const dispatch = useAppDispatch();
@@ -23,15 +33,6 @@ export default function SwipeableTemporaryDrawer() {
   const toggleDrawer = (event: KeyboardEvent | MouseEvent) => {
     toggleMenuDrawer({ event, dispatch });
   };
-
-  const drawerItems = [
-    {
-      name: "user_settings",
-      label: t("general.user_settings"),
-      icon: <BadgeIcon />,
-      onClick: () => {},
-    },
-  ];
 
   const list = () => (
     <Box

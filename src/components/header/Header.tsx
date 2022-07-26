@@ -1,4 +1,6 @@
 import AccountCircle from "@mui/icons-material/AccountCircle";
+import BadgeIcon from "@mui/icons-material/Badge";
+import SmartToyIcon from "@mui/icons-material/SmartToy";
 import MenuIcon from "@mui/icons-material/Menu";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import AppBar from "@mui/material/AppBar";
@@ -10,14 +12,15 @@ import MenuItem from "@mui/material/MenuItem";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { KeyboardEvent, MouseEvent, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useAppDispatch } from "../../app/hooks";
 import { startLogout } from "../../auth/thunks";
-
 import toggleMenuDrawer from "../../helpers/toggleMenuDrawer";
-import MenuDrawer from "../menuDrawer/MenuDrawer";
+import MenuDrawer, { DrawerItem } from "../menuDrawer/MenuDrawer";
 
 export default function Header() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [t] = useTranslation();
   const dispatch = useAppDispatch();
 
   const isMenuOpen = Boolean(anchorEl);
@@ -35,6 +38,21 @@ export default function Header() {
   };
 
   const handleLogout = async () => await dispatch(startLogout());
+
+  const drawerItems: DrawerItem[] = [
+    {
+      name: "user_settings",
+      label: t("general.user_settings"),
+      icon: <BadgeIcon />,
+      onClick: () => {},
+    },
+    {
+      name: "medabot_creation",
+      label: t("medabots.medabot_creation"),
+      icon: <SmartToyIcon />,
+      onClick: () => {},
+    },
+  ];
 
   const renderMenu = (
     <Menu
@@ -101,7 +119,7 @@ export default function Header() {
         </Toolbar>
       </AppBar>
       {renderMenu}
-      <MenuDrawer />
+      <MenuDrawer drawerItems={drawerItems} />
     </Box>
   );
 }
