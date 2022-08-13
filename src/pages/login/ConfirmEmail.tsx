@@ -1,18 +1,30 @@
 import { Paper, Typography } from "@mui/material";
 import { applyActionCode } from "firebase/auth";
+import { useSnackbar } from "notistack";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { useAppDispatch } from "../../app/hooks";
+import { verifyUser } from "../../auth/authSlice";
 import { FirebaseAuth } from "../../firebase/config";
+import errorHandler from "../../hooks/errorHandler";
 
 export default function ConfirmEmail() {
   const [t] = useTranslation();
   const [searchParams] = useSearchParams();
   const oobCode = searchParams.get("oobCode");
+  const { enqueueSnackbar } = useSnackbar();
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const verifyEmail = async (verifCode: string) => {
-    await applyActionCode(FirebaseAuth, verifCode);
-    // TODO: Navigate
+    try {
+      await applyActionCode(FirebaseAuth, verifCode);
+      dispatch(verifyUser());
+      navigate("/");
+    } catch (e) {
+      errorHandler(e, enqueueSnackbar, t);
+    }
   };
 
   useEffect(() => {

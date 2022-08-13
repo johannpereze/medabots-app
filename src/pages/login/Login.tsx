@@ -102,6 +102,7 @@ export default function Login({ step }: LoginProps) {
         <Paper
           elevation={4}
           sx={{
+            maxWidth: "90%",
             width: 350,
             display: "flex",
             flexDirection: "column",
@@ -129,6 +130,7 @@ export default function Login({ step }: LoginProps) {
           elevation={0}
           variant="outlined"
           sx={{
+            maxWidth: "90%",
             width: 350,
             display: "flex",
             justifyContent: "center",
@@ -172,7 +174,13 @@ export default function Login({ step }: LoginProps) {
           flexDirection: "column",
         }}
       >
-        <Box sx={{ width: 350, mb: 10 }}>
+        <Box
+          sx={{
+            width: 350,
+            maxWidth: "90%",
+            mb: 10,
+          }}
+        >
           <Grid container spacing={2}>
             <Grid item xs={6}>
               <LanguageSelector />

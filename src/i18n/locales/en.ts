@@ -13,6 +13,8 @@ const en = {
     },
     errors: {
       email_not_verified: "Email not verified",
+      go_to_your_email_inbox_and_click_the_confirmation_link:
+        "Go to your email inbox and click the confirmation link",
       login: {
         confirmation_code_is_required: "Confirmation code is required",
         confirmation_code_should_be_a_6_digits_number:

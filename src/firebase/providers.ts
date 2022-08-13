@@ -28,10 +28,8 @@ export const registerWithEmail = async ({
   displayName,
 }: any): Promise<{
   ok: boolean;
-  // uid?: string;
-  // photoURL?: string | null;
-  // email?: any;
-  // displayName?: any;
+  uid?: string;
+  photoURL?: string | null;
   // user?: User;
   errorMessage?: string | undefined;
 }> => {
@@ -46,9 +44,14 @@ export const registerWithEmail = async ({
 
     await sendEmailVerification(resp.user);
 
-    // const { uid, photoURL } = resp.user;
+    const { uid, photoURL } = resp.user;
     // console.log(uid, photoURL);
-    return { ok: true };
+    return {
+      ok: true,
+      uid,
+      photoURL,
+      errorMessage: "go_to_your_email_inbox_and_click_the_confirmation_link",
+    };
   } catch (e) {
     return { ok: false, errorMessage: `${e}` };
   }
