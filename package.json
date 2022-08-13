@@ -17,13 +17,11 @@
     "@emotion/react": "11.9.3",
     "@emotion/styled": "11.9.3",
     "@mui/icons-material": "^5.8.4",
-    "@mui/lab": "^5.0.0-alpha.91",
-    "@mui/material": "^5.9.1",
+    "@mui/lab": "^5.0.0-alpha.92",
+    "@mui/material": "^5.9.2",
     "@reduxjs/toolkit": "^1.8.3",
-    "aws-amplify": "^4.3.27",
     "firebase": "^9.9.1",
     "formik": "^2.2.9",
-    "gh-pages": "^4.0.0",
     "i18next": "^21.8.14",
     "i18next-browser-languagedetector": "^6.1.4",
     "notistack": "^2.0.5",
@@ -48,8 +46,9 @@
     "eslint-plugin-n": "^15.2.4",
     "eslint-plugin-promise": "^6.0.0",
     "eslint-plugin-react": "^7.30.1",
+    "gh-pages": "^4.0.0",
     "prettier": "^2.7.1",
     "typescript": "^4.7.4",
-    "vite": "^3.0.2"
+    "vite": "^3.0.3"
   }
 }

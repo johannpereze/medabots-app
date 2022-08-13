@@ -10,24 +10,29 @@ import {
 import { useFormik } from "formik";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import * as yup from "yup";
-import { UserAttributes } from "../../auth/signUp";
+import { signUpInfo } from "../../auth/authSlice";
 import PasswordField from "../../components/passwordField/PasswordField";
 
-interface SignUpValues extends UserAttributes {
+interface SignUpValuesForm {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
   password2: string;
 }
 
 interface RegisterFormProps {
-  submit: (values: SignUpValues) => void;
+  submit: ({ email, password, displayName }: signUpInfo) => Promise<void>;
 }
 
 export default function RegisterForm({ submit }: RegisterFormProps) {
   const [termsChecked, setTermsChecked] = useState(false);
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const validationSchema = yup.object({
-    givenName: yup
+    firstName: yup
       .string()
       .min(3, t("error.first_name_should_be_of_minimum_3_characters_long"))
       .max(20, t("error.first_name_should_be_of_maximum_20_characters_long"))
@@ -35,7 +40,7 @@ export default function RegisterForm({ submit }: RegisterFormProps) {
         /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u
       )
       .required(t("errors.login.first_name_is_required")),
-    familyName: yup
+    lastName: yup
       .string()
       .min(3, t("error.last_name_should_be_of_minimum_3_characters_long"))
       .max(20, t("error.last_name_should_be_of_maximum_20_characters_long"))
@@ -64,9 +69,9 @@ export default function RegisterForm({ submit }: RegisterFormProps) {
       .required(t("errors.login.password_is_required")),
   });
 
-  const initialValues: SignUpValues = {
-    givenName: "",
-    familyName: "",
+  const initialValues: SignUpValuesForm = {
+    firstName: "",
+    lastName: "",
     email: "",
     password: "",
     password2: "",
@@ -75,12 +80,41 @@ export default function RegisterForm({ submit }: RegisterFormProps) {
   const formik = useFormik({
     initialValues,
     validationSchema,
-    onSubmit: (values) => {
-      submit(values);
+    onSubmit: async ({ email, password, firstName, lastName }) => {
+      await submit({
+        email,
+        password,
+        displayName: `${firstName} ${lastName}`,
+      });
+      navigate(`/login?email=${encodeURIComponent(email)}`);
     },
     validateOnBlur: true,
     validateOnMount: true,
   });
+
+  /*   const signUp = async (
+    { email, password, firstName, lastName }: UserAttributes,
+    dispatch: AppDispatch,
+    navigate: NavigateFunction,
+    enqueueSnackbar: EnqueueSnackbar,
+    t: TFunction<"translation", undefined>
+  ) => {
+    try {
+      await dispatch(
+        startCreatingUserWithEmail({
+          email,
+          password,
+          // TODO: change given name to displayName
+          displayName: firstName,
+        })
+      );
+      navigate(`/login?email=${encodeURIComponent(email)}`);
+    } catch (error) {
+      errorHandler(error, enqueueSnackbar, t);
+    }
+  };
+  
+  export default signUp; */
 
   return (
     <Box
@@ -91,25 +125,25 @@ export default function RegisterForm({ submit }: RegisterFormProps) {
       <Box sx={{ mt: 2, mb: 0 }}>
         <TextField
           fullWidth
-          name="givenName"
+          name="firstName"
           label={t("login.first_name")}
-          value={formik.values.givenName}
+          value={formik.values.firstName}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          error={formik.touched.givenName && Boolean(formik.errors.givenName)}
-          helperText={formik.touched.givenName && formik.errors.givenName}
+          error={formik.touched.firstName && Boolean(formik.errors.firstName)}
+          helperText={formik.touched.firstName && formik.errors.firstName}
         />
       </Box>
       <Box sx={{ mt: 2, mb: 0 }}>
         <TextField
           fullWidth
-          name="familyName"
+          name="lastName"
           label={t("login.last_name")}
-          value={formik.values.familyName}
+          value={formik.values.lastName}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          error={formik.touched.familyName && Boolean(formik.errors.familyName)}
-          helperText={formik.touched.familyName && formik.errors.familyName}
+          error={formik.touched.lastName && Boolean(formik.errors.lastName)}
+          helperText={formik.touched.lastName && formik.errors.lastName}
         />
       </Box>
       <Box sx={{ mt: 2, mb: 0 }}>

@@ -12,15 +12,15 @@ import { useSnackbar } from "notistack";
 import { useTranslation } from "react-i18next";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import confirmSignUp, { ConfirmCode } from "../../auth/confirmSignUp";
-import { LoginValues } from "../../auth/signIn";
-import signUp, { UserAttributes } from "../../auth/signUp";
+import { signUpInfo, startCreatingUserWithEmail } from "../../auth/authSlice";
+
 import { startLoginWithEmail } from "../../auth/thunks";
+import { LoginValues, SetSubmitting } from "../../auth/types";
 import LanguageSelector from "../../components/languageSelector/LanguageSelector";
 import ThemeSelector from "../../components/themeSelector/ThemeSelector";
+import errorHandler from "../../hooks/errorHandler";
 import LoginForm from "./LoginForm";
 import RecoveryForm from "./RecoveryForm";
-import RegisterConfirmForm from "./RegisterConfirmForm";
 import RegisterForm from "./RegisterForm";
 
 interface LoginProps {
@@ -34,11 +34,11 @@ export default function Login({ step }: LoginProps) {
   const { enqueueSnackbar } = useSnackbar();
 
   // TODO: change display name
-  const userEmail = useAppSelector((state) => state.auth.displayName);
   const errorMessage = useAppSelector((state) => state.auth.errorMessage);
   const unverifiedUser = useAppSelector((state) => state.auth.unverifiedUser);
 
-  const signUpSubmit = async ({
+  // TODO: Change signup to register and organize the terminology
+  /*   const signUpSubmit = async ({
     email,
     password,
     givenName,
@@ -56,26 +56,33 @@ export default function Login({ step }: LoginProps) {
       enqueueSnackbar,
       t
     );
-  };
+  }; */
 
-  const confirmSignUpSubmit = async ({ confirmCode }: ConfirmCode) => {
-    confirmSignUp(
-      { confirmCode },
-      userEmail || "",
-      navigate,
-      enqueueSnackbar,
-      t,
-      dispatch
-    );
+  const signUpSubmit = async ({ email, password, displayName }: signUpInfo) => {
+    try {
+      await dispatch(
+        startCreatingUserWithEmail({
+          email,
+          password,
+          displayName,
+        })
+      );
+      navigate(`/login?email=${encodeURIComponent(email)}`);
+    } catch (e) {
+      errorHandler(e, enqueueSnackbar, t);
+    }
   };
 
   const handleResend = async () => {
     if (unverifiedUser) sendEmailVerification(unverifiedUser);
   };
 
-  const signInSubmit = ({ email, password }: LoginValues) => {
+  const signInSubmit = (
+    { email, password }: LoginValues,
+    setSubmitting: SetSubmitting
+  ) => {
     console.log("se ejecuta signInSubmit", email, password);
-    dispatch(startLoginWithEmail({ email, password }));
+    dispatch(startLoginWithEmail({ email, password }, setSubmitting));
   };
 
   return (
@@ -111,9 +118,6 @@ export default function Login({ step }: LoginProps) {
           )}
           {step === "register" && <RegisterForm submit={signUpSubmit} />}
           {step === "passwordRecovery" && <RecoveryForm />}
-          {step === "confirmationCode" && (
-            <RegisterConfirmForm submit={confirmSignUpSubmit} />
-          )}
           {step === "login" && <LoginForm submit={signInSubmit} />}
           {unverifiedUser && (
             <Button onClick={handleResend}>
@@ -132,6 +136,7 @@ export default function Login({ step }: LoginProps) {
             my: 1,
           }}
         >
+          {/* TODO: delete all confirmation code references */}
           {(step === "register" || step === "confirmationCode") && (
             <Typography variant="body2">
               {t("login.already_registered")}{" "}

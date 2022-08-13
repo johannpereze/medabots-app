@@ -1,5 +1,6 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { User } from "firebase/auth";
+import { registerWithEmail } from "../firebase/providers";
 
 export interface AuthState {
   status: "checking" | "not_authenticated" | "authenticated";
@@ -10,6 +11,13 @@ export interface AuthState {
   unverifiedUser?: User;
 }
 
+// interface AuthValues {
+//   uid?: string | null;
+//   displayName?: string | null;
+//   photoURL?: string | null;
+//   email?: string | null;
+// }
+
 const initialState: AuthState = {
   status: "not_authenticated",
   uid: null,
@@ -17,6 +25,29 @@ const initialState: AuthState = {
   photoURL: null,
   errorMessage: null,
 };
+
+export interface signUpInfo {
+  email: string;
+  password: string;
+  displayName: string;
+}
+
+export const startCreatingUserWithEmail = createAsyncThunk<
+  void,
+  signUpInfo,
+  { rejectValue: { errorMessage: string } }
+>(
+  "auth/startCreatingUserWithEmail",
+  async ({ email, password, displayName }: signUpInfo, { rejectWithValue }) => {
+    const { ok, errorMessage } = await registerWithEmail({
+      email,
+      password,
+      displayName,
+    });
+    if (!ok)
+      return rejectWithValue({ errorMessage: errorMessage || "Unknown error" });
+  }
+);
 
 export const authSlice = createSlice({
   name: "auth",
@@ -40,6 +71,20 @@ export const authSlice = createSlice({
     setUnverifiedUser: (state, { payload }) => {
       state.unverifiedUser = payload.user;
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(startCreatingUserWithEmail.pending, (state) => {
+        state.status = "checking";
+      })
+      .addCase(startCreatingUserWithEmail.fulfilled, (state, { payload }) => {
+        if (typeof payload === "boolean") return;
+        state.status = "not_authenticated";
+        state.errorMessage = null;
+      })
+      .addCase(startCreatingUserWithEmail.rejected, (state, { payload }) => {
+        state.errorMessage = payload?.errorMessage || "Unknown error";
+      });
   },
 });
 

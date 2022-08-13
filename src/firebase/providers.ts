@@ -26,22 +26,31 @@ export const registerWithEmail = async ({
   email,
   password,
   displayName,
-}: any) => {
+}: any): Promise<{
+  ok: boolean;
+  // uid?: string;
+  // photoURL?: string | null;
+  // email?: any;
+  // displayName?: any;
+  // user?: User;
+  errorMessage?: string | undefined;
+}> => {
   try {
     const resp = await createUserWithEmailAndPassword(
       FirebaseAuth,
       email,
       password
     );
-    console.log("resp", resp);
+
+    await updateProfile(resp.user, { displayName });
 
     await sendEmailVerification(resp.user);
-    const { uid, photoURL } = resp.user;
-    await updateProfile(resp.user, { displayName });
-    console.log(uid, photoURL);
-    return { ok: true, uid, photoURL, email, displayName, user: resp.user };
+
+    // const { uid, photoURL } = resp.user;
+    // console.log(uid, photoURL);
+    return { ok: true };
   } catch (e) {
-    return { ok: false, errorMessage: e };
+    return { ok: false, errorMessage: `${e}` };
   }
 };
 

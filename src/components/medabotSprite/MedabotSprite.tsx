@@ -336,7 +336,7 @@ export default function MedabotSprite({
 
         height: ${_spritePosition[key as keyof Sprite].height * scale}px;
         width: ${_spritePosition[key as keyof Sprite].width * scale}px;
-        background: url("https://raw.githubusercontent.com/johannpereze/medabots-app/main/src/static/images/mainSprites.png")
+        background: url("https://firebasestorage.googleapis.com/v0/b/medabotsapp.appspot.com/o/main-sprites.png?alt=media&token=4430ae60-1d69-491a-80cd-160fdf585e3b")
           ${_spritePosition[key as keyof Sprite].x * scale}px
           ${_spritePosition[key as keyof Sprite].y * scale}px;
         image-rendering: pixelated;

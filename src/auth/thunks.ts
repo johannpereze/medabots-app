@@ -1,7 +1,6 @@
 import { AppDispatch } from "../app/store";
 import {
   logoutFirebase,
-  registerWithEmail,
   signInWithEmail,
   signInWithGoole,
 } from "../firebase/providers";
@@ -11,6 +10,7 @@ import {
   logout,
   setUnverifiedUser,
 } from "./authSlice";
+import { SetSubmitting } from "./types";
 
 // TODO Refactor this with create async thunk
 export const checkingAuthentication = () => {
@@ -30,30 +30,33 @@ export const startGoogleSign = () => {
 };
 
 // TODO: any
-export const startCreatingUserWithEmail = ({
-  email,
-  password,
-  displayName,
-}: any) => {
-  return async (dispatch: AppDispatch) => {
-    dispatch(checkingCredentials());
+// export const startCreatingUserWithEmail = ({
+//   email,
+//   password,
+//   displayName,
+// }: any) => {
+//   return async (dispatch: AppDispatch) => {
+//     dispatch(checkingCredentials());
 
-    const { ok, uid, photoURL, errorMessage } = await registerWithEmail({
-      email,
-      password,
-      displayName,
-    });
-    if (!ok) return dispatch(logout({ errorMessage }));
-    return { uid, photoURL, displayName, email };
-    // dispatch(login({ uid, photoURL, displayName, email })); TODO: I dont think I need this
-  };
-};
+//     const { ok, uid, photoURL, errorMessage } = await registerWithEmail({
+//       email,
+//       password,
+//       displayName,
+//     });
+//     if (!ok) return dispatch(logout({ errorMessage }));
+//     return { uid, photoURL, displayName, email };
+//     // dispatch(login({ uid, photoURL, displayName, email })); TODO: I dont think I need this
+//   };
+// };
 
-export const startLoginWithEmail = ({
-  email,
-  password,
-}: // TODO: any
-any) => {
+export const startLoginWithEmail = (
+  {
+    email,
+    password,
+  }: // TODO: any
+  any,
+  setSubmitting: SetSubmitting
+) => {
   console.log("se ejecuta startLoginWithEmail", email, password);
   return async (dispatch: AppDispatch) => {
     console.log("Justo antes de ejecutar el checkingCredentials");
@@ -64,7 +67,10 @@ any) => {
         email,
         password,
       });
-    if (!ok) return dispatch(logout({ errorMessage }));
+    if (!ok) {
+      setSubmitting(false);
+      return dispatch(logout({ errorMessage }));
+    }
     if (!emailVerified) {
       // TODO: make sure unverified users are not logged to the app in any way (the private routes are protected)
       dispatch(logout({ errorMessage: "email_not_verified" }));

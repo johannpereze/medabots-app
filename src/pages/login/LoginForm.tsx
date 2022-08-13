@@ -8,11 +8,13 @@ import { NavLink, useSearchParams } from "react-router-dom";
 import * as yup from "yup";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { googleSignIn } from "../../auth/googleSignIn";
-import { LoginValues } from "../../auth/signIn";
 import PasswordField from "../../components/passwordField/PasswordField";
 
 interface LoginFormProps {
-  submit: ({ email, password }: LoginValues) => void;
+  submit: (
+    { email, password }: any, // LoginValues,
+    setSubmitting: any // SetSubmitting
+  ) => void;
 }
 export default function LoginForm({ submit }: LoginFormProps) {
   const { t } = useTranslation();
@@ -36,9 +38,9 @@ export default function LoginForm({ submit }: LoginFormProps) {
       password: "",
     },
     validationSchema,
-    onSubmit: (values) => {
+    onSubmit: (values, { setSubmitting }) => {
       console.log("submit", values);
-      submit(values);
+      submit(values, setSubmitting);
     },
     validateOnBlur: true,
     validateOnMount: true,

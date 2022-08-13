@@ -10,7 +10,6 @@ import {
   REHYDRATE,
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
-// Change Slice to Reducer because the export ir fooSlice.reducer
 import rootReducer from "./rootReducer";
 
 const persistConfig = {
