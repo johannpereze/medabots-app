@@ -14,13 +14,6 @@ export interface AuthState {
   unverifiedUser?: User;
 }
 
-// interface AuthValues {
-//   uid?: string | null;
-//   displayName?: string | null;
-//   photoURL?: string | null;
-//   email?: string | null;
-// }
-
 const initialState: AuthState = {
   status: "not_authenticated",
   uid: null,
@@ -43,29 +36,24 @@ export const startCreatingUserWithEmail = createAsyncThunk<
   { rejectValue: { errorMessage: string } }
 >(
   "auth/startCreatingUserWithEmail",
-  async ({ email, password, displayName }: signUpInfo, { rejectWithValue }) => {
-    const { ok, errorMessage, uid, photoURL } = await registerWithEmail({
+  async ({ email, password, displayName }, { rejectWithValue }) => {
+    const authState = await registerWithEmail({
       email,
       password,
       displayName,
     });
-    if (!ok)
-      return rejectWithValue({ errorMessage: errorMessage || "Unknown error" });
-    return {
-      email,
-      displayName,
-      uid: uid || null,
-      photoURL: photoURL || null,
-      verified: false,
-      errorMessage: errorMessage || null,
-      status: "not_authenticated",
-    };
+    if (!authState.uid)
+      return rejectWithValue({
+        errorMessage: authState.errorMessage || "Unknown error",
+      });
+    return authState;
   }
 );
 
 export const authSlice = createSlice({
   name: "auth",
   initialState,
+  // TODO:  make this state updates ShortTextRounded. Too many lines
   reducers: {
     login: (state, { payload }) => {
       state.status = "authenticated";
@@ -91,9 +79,10 @@ export const authSlice = createSlice({
       ...state,
       status: "checking",
     }),
-    verifyUser: (state) => {
-      state.verified = !!state.uid;
-    },
+    verifyUser: (state) => ({
+      ...state,
+      verified: !!state.uid,
+    }),
     // TODO: do i use this?
     setUnverifiedUser: (state, { payload }) => {
       state.unverifiedUser = payload.user;
@@ -104,13 +93,14 @@ export const authSlice = createSlice({
       .addCase(startCreatingUserWithEmail.pending, (state) => {
         state.status = "checking";
       })
-      .addCase(startCreatingUserWithEmail.fulfilled, (state, { payload }) => {
-        if (typeof payload === "boolean") return;
-        return payload;
-      })
-      .addCase(startCreatingUserWithEmail.rejected, (state, { payload }) => {
-        state.errorMessage = payload?.errorMessage || "Unknown error";
-      });
+      .addCase(
+        startCreatingUserWithEmail.fulfilled,
+        (state, { payload }) => payload
+      )
+      .addCase(startCreatingUserWithEmail.rejected, (state, { payload }) => ({
+        ...initialState,
+        errorMessage: payload?.errorMessage || "Unknown error",
+      }));
   },
 });
 

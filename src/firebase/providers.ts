@@ -6,6 +6,7 @@ import {
   signInWithPopup,
   updateProfile,
 } from "firebase/auth";
+import { AuthState, signUpInfo } from "../auth/authSlice";
 import { FirebaseAuth } from "./config";
 
 const googleProvider = new GoogleAuthProvider();
@@ -26,13 +27,14 @@ export const registerWithEmail = async ({
   email,
   password,
   displayName,
-}: any): Promise<{
+}: signUpInfo): Promise<AuthState> => {
+  /* {
   ok: boolean;
   uid?: string;
   photoURL?: string | null;
   // user?: User;
   errorMessage?: string | undefined;
-}> => {
+} */
   try {
     const resp = await createUserWithEmailAndPassword(
       FirebaseAuth,
@@ -47,13 +49,25 @@ export const registerWithEmail = async ({
     const { uid, photoURL } = resp.user;
     // console.log(uid, photoURL);
     return {
-      ok: true,
+      // ok: true,
       uid,
       photoURL,
+      status: "not_authenticated",
+      displayName,
+      email,
+      verified: false,
       errorMessage: "go_to_your_email_inbox_and_click_the_confirmation_link",
     };
   } catch (e) {
-    return { ok: false, errorMessage: `${e}` };
+    return {
+      uid: null,
+      photoURL: null,
+      status: "not_authenticated",
+      displayName: null,
+      email: null,
+      verified: false,
+      errorMessage: `${e}`,
+    };
   }
 };
 
