@@ -6,7 +6,12 @@ import {
   signInWithPopup,
   updateProfile,
 } from "firebase/auth";
-import { AuthState, signUpInfo } from "../auth/authSlice";
+import {
+  authInitialState,
+  AuthState,
+  SignInInfo,
+  SignUpInfo,
+} from "../auth/authSlice";
 import { FirebaseAuth } from "./config";
 
 const googleProvider = new GoogleAuthProvider();
@@ -22,34 +27,23 @@ export const signInWithGoole = async () => {
   }
 };
 
-// TODO: any
 export const registerWithEmail = async ({
   email,
   password,
   displayName,
-}: signUpInfo): Promise<AuthState> => {
-  /* {
-  ok: boolean;
-  uid?: string;
-  photoURL?: string | null;
-  // user?: User;
-  errorMessage?: string | undefined;
-} */
+}: SignUpInfo): Promise<AuthState> => {
   try {
-    const resp = await createUserWithEmailAndPassword(
+    const { user } = await createUserWithEmailAndPassword(
       FirebaseAuth,
       email,
       password
     );
 
-    await updateProfile(resp.user, { displayName });
+    await updateProfile(user, { displayName });
+    await sendEmailVerification(user);
 
-    await sendEmailVerification(resp.user);
-
-    const { uid, photoURL } = resp.user;
-    // console.log(uid, photoURL);
+    const { uid, photoURL } = user;
     return {
-      // ok: true,
       uid,
       photoURL,
       status: "not_authenticated",
@@ -60,37 +54,34 @@ export const registerWithEmail = async ({
     };
   } catch (e) {
     return {
-      uid: null,
-      photoURL: null,
-      status: "not_authenticated",
-      displayName: null,
-      email: null,
-      verified: false,
+      ...authInitialState,
       errorMessage: `${e}`,
     };
   }
 };
 
-export const signInWithEmail = async ({ email, password }: any) => {
+export const signInWithEmail = async ({
+  email,
+  password,
+}: SignInInfo): Promise<AuthState> => {
   try {
-    const resp = await signInWithEmailAndPassword(
+    const { user } = await signInWithEmailAndPassword(
       FirebaseAuth,
       email,
       password
     );
-    console.log("signInWithEmailAndPassword resp", resp);
-    const { uid, photoURL, displayName, emailVerified } = resp.user;
+    const { uid, photoURL, displayName, emailVerified } = user;
     return {
-      ok: true,
       uid,
       photoURL,
       email,
       displayName,
-      emailVerified,
-      user: resp.user,
+      verified: emailVerified,
+      errorMessage: emailVerified ? null : "email_not_verified",
+      status: emailVerified ? "authenticated" : "not_authenticated",
     };
   } catch (e) {
-    return { ok: false, errorMessage: e };
+    return { ...authInitialState, errorMessage: `${e}` };
   }
 };
 

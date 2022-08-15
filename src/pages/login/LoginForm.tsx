@@ -7,20 +7,18 @@ import { useTranslation } from "react-i18next";
 import { NavLink, useSearchParams } from "react-router-dom";
 import * as yup from "yup";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { SignInInfo } from "../../auth/authSlice";
 import { googleSignIn } from "../../auth/googleSignIn";
 import PasswordField from "../../components/passwordField/PasswordField";
 
 interface LoginFormProps {
-  submit: (
-    { email, password }: any, // LoginValues,
-    setSubmitting: any // SetSubmitting
-  ) => void;
+  submit: ({ email, password }: SignInInfo) => void;
 }
 export default function LoginForm({ submit }: LoginFormProps) {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const [searchParams] = useSearchParams();
-  const status = useAppSelector((state) => state.auth.status);
+  const { status } = useAppSelector((state) => state.auth);
 
   const isAuthenticating = useMemo(() => status === "checking", [status]);
 
@@ -38,9 +36,9 @@ export default function LoginForm({ submit }: LoginFormProps) {
       password: "",
     },
     validationSchema,
-    onSubmit: (values, { setSubmitting }) => {
+    onSubmit: (values) => {
       console.log("submit", values);
-      submit(values, setSubmitting);
+      submit(values);
     },
     validateOnBlur: true,
     validateOnMount: true,
@@ -76,9 +74,9 @@ export default function LoginForm({ submit }: LoginFormProps) {
         fullWidth
         variant="contained"
         type="submit"
-        disabled={formik.isSubmitting || !formik.isValid}
+        disabled={!formik.isValid || isAuthenticating}
         sx={{ mt: 3 }}
-        loading={formik.isSubmitting}
+        loading={isAuthenticating}
       >
         {t("login.log_in")}
       </LoadingButton>

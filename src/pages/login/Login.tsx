@@ -12,10 +12,12 @@ import { useSnackbar } from "notistack";
 import { useTranslation } from "react-i18next";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { signUpInfo, startCreatingUserWithEmail } from "../../auth/authSlice";
-
-import { startLoginWithEmail } from "../../auth/thunks";
-import { LoginValues, SetSubmitting } from "../../auth/types";
+import {
+  SignInInfo,
+  SignUpInfo,
+  startCreatingUserWithEmail,
+  startLoginWithEmail,
+} from "../../auth/authSlice";
 import LanguageSelector from "../../components/languageSelector/LanguageSelector";
 import ThemeSelector from "../../components/themeSelector/ThemeSelector";
 import errorHandler from "../../hooks/errorHandler";
@@ -58,7 +60,7 @@ export default function Login({ step }: LoginProps) {
     );
   }; */
 
-  const signUpSubmit = async ({ email, password, displayName }: signUpInfo) => {
+  const signUpSubmit = async ({ email, password, displayName }: SignUpInfo) => {
     try {
       await dispatch(
         startCreatingUserWithEmail({
@@ -77,12 +79,9 @@ export default function Login({ step }: LoginProps) {
     if (unverifiedUser) sendEmailVerification(unverifiedUser);
   };
 
-  const signInSubmit = (
-    { email, password }: LoginValues,
-    setSubmitting: SetSubmitting
-  ) => {
-    console.log("se ejecuta signInSubmit", email, password);
-    dispatch(startLoginWithEmail({ email, password }, setSubmitting));
+  const signInSubmit = ({ email, password }: SignInInfo) => {
+    // TODO: not handling isSubmitting
+    dispatch(startLoginWithEmail({ email, password }));
   };
 
   return (

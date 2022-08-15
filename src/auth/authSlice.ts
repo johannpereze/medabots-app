@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { User } from "firebase/auth";
-import { registerWithEmail } from "../firebase/providers";
+import { registerWithEmail, signInWithEmail } from "../firebase/providers";
 
 export interface AuthState {
   status: "checking" | "not_authenticated" | "authenticated";
@@ -8,13 +8,14 @@ export interface AuthState {
   displayName: string | null;
   email: string | null;
   photoURL: string | null;
+  // TODO: change verified to emailVerified as defined by firebase
   verified: boolean;
   errorMessage: string | null;
   // TODO: I'm i using this?
   unverifiedUser?: User;
 }
 
-const initialState: AuthState = {
+export const authInitialState: AuthState = {
   status: "not_authenticated",
   uid: null,
   displayName: null,
@@ -24,24 +25,28 @@ const initialState: AuthState = {
   errorMessage: null,
 };
 
-export interface signUpInfo {
+export interface SignUpInfo {
   email: string;
   password: string;
   displayName: string;
 }
+export interface SignInInfo {
+  email: string;
+  password: string;
+}
+
+interface RejectValue {
+  rejectValue: { errorMessage: string };
+}
 
 export const startCreatingUserWithEmail = createAsyncThunk<
   AuthState,
-  signUpInfo,
-  { rejectValue: { errorMessage: string } }
+  SignUpInfo,
+  RejectValue
 >(
   "auth/startCreatingUserWithEmail",
-  async ({ email, password, displayName }, { rejectWithValue }) => {
-    const authState = await registerWithEmail({
-      email,
-      password,
-      displayName,
-    });
+  async (signUpInfo, { rejectWithValue }) => {
+    const authState = await registerWithEmail(signUpInfo);
     if (!authState.uid)
       return rejectWithValue({
         errorMessage: authState.errorMessage || "Unknown error",
@@ -50,10 +55,23 @@ export const startCreatingUserWithEmail = createAsyncThunk<
   }
 );
 
+export const startLoginWithEmail = createAsyncThunk<
+  AuthState,
+  SignInInfo,
+  RejectValue
+>("auth/startLoginWithEmail", async (signInInfo, { rejectWithValue }) => {
+  const authState = await signInWithEmail(signInInfo);
+  if (!authState.uid)
+    return rejectWithValue({
+      errorMessage: authState.errorMessage || "Unknown error",
+    });
+  return authState;
+});
+
 export const authSlice = createSlice({
   name: "auth",
-  initialState,
-  // TODO:  make this state updates ShortTextRounded. Too many lines
+  initialState: authInitialState,
+  // TODO:  make this state updates shroter. Too many lines
   reducers: {
     login: (state, { payload }) => {
       state.status = "authenticated";
@@ -64,7 +82,7 @@ export const authSlice = createSlice({
       state.verified = payload.emailVerified;
     },
     logout: (state, { payload }) => ({
-      ...initialState,
+      ...authInitialState,
       errorMessage: payload.errorMessage,
     }),
     softLogout: (state, { payload }) => {
@@ -98,7 +116,15 @@ export const authSlice = createSlice({
         (state, { payload }) => payload
       )
       .addCase(startCreatingUserWithEmail.rejected, (state, { payload }) => ({
-        ...initialState,
+        ...authInitialState,
+        errorMessage: payload?.errorMessage || "Unknown error",
+      }))
+      .addCase(startLoginWithEmail.pending, (state) => {
+        state.status = "checking";
+      })
+      .addCase(startLoginWithEmail.fulfilled, (state, { payload }) => payload)
+      .addCase(startLoginWithEmail.rejected, (state, { payload }) => ({
+        ...authInitialState,
         errorMessage: payload?.errorMessage || "Unknown error",
       }));
   },
