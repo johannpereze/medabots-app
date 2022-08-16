@@ -11,13 +11,34 @@ export const getCurrentUser = async (
 ) => {
   try {
     onAuthStateChanged(FirebaseAuth, async (user) => {
-      console.log("user", user);
-      // TODO: verificar todos los logout para ver si tienen un correcto error message
       if (!user) return dispatch(logout({ errorMessage: null }));
-      // if (!user.emailVerified) return dispatch(login(user));
-      if (!isEmailVerified) return dispatch(softLogout(user));
-      console.log("login in getCurrentUser");
-      dispatch(login(user));
+
+      const { displayName, email, emailVerified, photoURL, uid } = user;
+
+      if (!user.emailVerified)
+        return dispatch(
+          // TODO: I should not use this long ObjectSchema. Just use {user, errorMessage and status }
+          softLogout({
+            displayName,
+            email,
+            errorMessage: null,
+            photoURL,
+            status: "authenticated",
+            uid,
+            emailVerified,
+          })
+        );
+      return dispatch(
+        login({
+          displayName,
+          email,
+          errorMessage: null,
+          photoURL,
+          status: "authenticated",
+          uid,
+          emailVerified,
+        })
+      );
     });
     setCheckingAuth(false);
   } catch (e) {

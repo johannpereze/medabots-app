@@ -12,7 +12,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { NavLink, useNavigate } from "react-router-dom";
 import * as yup from "yup";
-import { signUpInfo } from "../../auth/authSlice";
+import { SignUpInfo } from "../../auth/authSlice";
 import PasswordField from "../../components/passwordField/PasswordField";
 
 interface SignUpValuesForm {
@@ -24,7 +24,7 @@ interface SignUpValuesForm {
 }
 
 interface RegisterFormProps {
-  submit: ({ email, password, displayName }: signUpInfo) => Promise<void>;
+  submit: ({ email, password, displayName }: SignUpInfo) => Promise<void>;
 }
 
 export default function RegisterForm({ submit }: RegisterFormProps) {

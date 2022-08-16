@@ -12,7 +12,7 @@ export default function PrivateRoute({ children }: PrivateRouteProps) {
   const [checkingAuth, setCheckingAuth] = useState(true);
   const { status } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
-  const isEmailVerified = useAppSelector((state) => state.auth.verified);
+  const isEmailVerified = useAppSelector((state) => state.auth.emailVerified);
 
   useEffect(() => {
     getCurrentUser(dispatch, setCheckingAuth, isEmailVerified);

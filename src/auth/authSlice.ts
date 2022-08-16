@@ -1,6 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { User } from "firebase/auth";
-import { registerWithEmail, signInWithEmail } from "../firebase/providers";
+import {
+  logoutFirebase,
+  registerWithEmail,
+  signInWithEmail,
+  signInWithGoole,
+} from "../firebase/providers";
 
 export interface AuthState {
   status: "checking" | "not_authenticated" | "authenticated";
@@ -8,8 +13,7 @@ export interface AuthState {
   displayName: string | null;
   email: string | null;
   photoURL: string | null;
-  // TODO: change verified to emailVerified as defined by firebase
-  verified: boolean;
+  emailVerified: boolean;
   errorMessage: string | null;
   // TODO: I'm i using this?
   unverifiedUser?: User;
@@ -21,7 +25,7 @@ export const authInitialState: AuthState = {
   displayName: null,
   email: null,
   photoURL: null,
-  verified: false,
+  emailVerified: false,
   errorMessage: null,
 };
 
@@ -68,6 +72,22 @@ export const startLoginWithEmail = createAsyncThunk<
   return authState;
 });
 
+export const startGoogleSignIn = createAsyncThunk<AuthState, any, RejectValue>(
+  "auth/startGoogleSignIn",
+  async (_, { rejectWithValue }) => {
+    const authState = await signInWithGoole();
+    if (!authState.uid)
+      return rejectWithValue({
+        errorMessage: authState.errorMessage || "Unknown error",
+      });
+    return authState;
+  }
+);
+
+export const startLogout = createAsyncThunk("auth/startLogout", async () => {
+  await logoutFirebase();
+});
+
 export const authSlice = createSlice({
   name: "auth",
   initialState: authInitialState,
@@ -79,7 +99,7 @@ export const authSlice = createSlice({
       state.displayName = payload.displayName;
       state.photoURL = payload.photoURL;
       state.errorMessage = payload.emailVerified ? null : "email_not_verified";
-      state.verified = payload.emailVerified;
+      state.emailVerified = payload.emailVerified;
     },
     logout: (state, { payload }) => ({
       ...authInitialState,
@@ -91,7 +111,7 @@ export const authSlice = createSlice({
       state.displayName = payload.displayName;
       state.photoURL = payload.photoURL;
       state.errorMessage = payload.errorMessage;
-      state.verified = payload.emailVerified;
+      state.emailVerified = payload.emailVerified;
     },
     checkingCredentials: (state) => ({
       ...state,
@@ -99,7 +119,7 @@ export const authSlice = createSlice({
     }),
     verifyUser: (state) => ({
       ...state,
-      verified: !!state.uid,
+      emailVerified: !!state.uid,
     }),
     // TODO: do i use this?
     setUnverifiedUser: (state, { payload }) => {
@@ -126,6 +146,22 @@ export const authSlice = createSlice({
       .addCase(startLoginWithEmail.rejected, (state, { payload }) => ({
         ...authInitialState,
         errorMessage: payload?.errorMessage || "Unknown error",
+      }))
+      .addCase(startGoogleSignIn.pending, (state) => {
+        state.status = "checking";
+      })
+      .addCase(startGoogleSignIn.fulfilled, (state, { payload }) => payload)
+      .addCase(startGoogleSignIn.rejected, (state, { payload }) => ({
+        ...authInitialState,
+        errorMessage: payload?.errorMessage || "Unknown error",
+      }))
+      .addCase(startLogout.pending, (state) => {
+        state.status = "checking";
+      })
+      .addCase(startLogout.fulfilled, () => authInitialState)
+      .addCase(startLogout.rejected, () => ({
+        ...authInitialState,
+        errorMessage: "Unknown error",
       }));
   },
 });

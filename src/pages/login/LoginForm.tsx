@@ -7,8 +7,7 @@ import { useTranslation } from "react-i18next";
 import { NavLink, useSearchParams } from "react-router-dom";
 import * as yup from "yup";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { SignInInfo } from "../../auth/authSlice";
-import { googleSignIn } from "../../auth/googleSignIn";
+import { SignInInfo, startGoogleSignIn } from "../../auth/authSlice";
 import PasswordField from "../../components/passwordField/PasswordField";
 
 interface LoginFormProps {
@@ -84,7 +83,7 @@ export default function LoginForm({ submit }: LoginFormProps) {
         fullWidth
         startIcon={<Google />}
         disabled={isAuthenticating}
-        onClick={() => googleSignIn(dispatch)}
+        onClick={() => dispatch(startGoogleSignIn(null))}
         sx={{
           textTransform: "none",
           mt: 3,

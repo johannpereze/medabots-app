@@ -1,8 +1,8 @@
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import BadgeIcon from "@mui/icons-material/Badge";
-import SmartToyIcon from "@mui/icons-material/SmartToy";
 import MenuIcon from "@mui/icons-material/Menu";
 import NotificationsIcon from "@mui/icons-material/Notifications";
+import SmartToyIcon from "@mui/icons-material/SmartToy";
 import AppBar from "@mui/material/AppBar";
 import Badge from "@mui/material/Badge";
 import Box from "@mui/material/Box";
@@ -14,7 +14,7 @@ import Typography from "@mui/material/Typography";
 import { KeyboardEvent, MouseEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useAppDispatch } from "../../app/hooks";
-import { startLogout } from "../../auth/thunks";
+import { startLogout } from "../../auth/authSlice";
 import toggleMenuDrawer from "../../helpers/toggleMenuDrawer";
 import MenuDrawer, { DrawerItem } from "../menuDrawer/MenuDrawer";
 

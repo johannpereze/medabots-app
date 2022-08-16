@@ -16,14 +16,24 @@ import { FirebaseAuth } from "./config";
 
 const googleProvider = new GoogleAuthProvider();
 
-export const signInWithGoole = async () => {
+export const signInWithGoole = async (): Promise<AuthState> => {
   try {
-    const result = await signInWithPopup(FirebaseAuth, googleProvider);
-    // const credentials = GoogleAuthProvider.credentialFromResult(result); In case I need the accesToken or IdToken
-    const { displayName, email, photoURL, uid } = result.user;
-    return { ok: true, displayName, email, photoURL, uid };
+    const { user } = await signInWithPopup(FirebaseAuth, googleProvider);
+    const { displayName, email, photoURL, uid, emailVerified } = user;
+    return {
+      displayName,
+      email,
+      errorMessage: null,
+      photoURL,
+      status: "authenticated",
+      uid,
+      emailVerified,
+    };
   } catch (e) {
-    return { ok: false, errorMessage: e };
+    return {
+      ...authInitialState,
+      errorMessage: `${e}`,
+    };
   }
 };
 
@@ -44,13 +54,13 @@ export const registerWithEmail = async ({
 
     const { uid, photoURL } = user;
     return {
-      uid,
-      photoURL,
-      status: "not_authenticated",
       displayName,
       email,
-      verified: false,
       errorMessage: "go_to_your_email_inbox_and_click_the_confirmation_link",
+      photoURL,
+      status: "not_authenticated",
+      uid,
+      emailVerified: false,
     };
   } catch (e) {
     return {
@@ -72,13 +82,13 @@ export const signInWithEmail = async ({
     );
     const { uid, photoURL, displayName, emailVerified } = user;
     return {
-      uid,
-      photoURL,
-      email,
       displayName,
-      verified: emailVerified,
+      email,
       errorMessage: emailVerified ? null : "email_not_verified",
+      photoURL,
       status: emailVerified ? "authenticated" : "not_authenticated",
+      uid,
+      emailVerified,
     };
   } catch (e) {
     return { ...authInitialState, errorMessage: `${e}` };
