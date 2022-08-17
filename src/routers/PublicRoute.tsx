@@ -13,10 +13,9 @@ export default function PublicRoute({ children }: PublicRouteProps) {
   const { status } = useAppSelector((state) => state.auth);
 
   const dispatch = useAppDispatch();
-  const isEmailVerified = useAppSelector((state) => state.auth.emailVerified);
 
   useEffect(() => {
-    getCurrentUser(dispatch, setCheckingAuth, isEmailVerified);
+    getCurrentUser(dispatch, setCheckingAuth);
   }, []);
 
   if (checkingAuth) {

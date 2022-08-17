@@ -2,41 +2,30 @@ import { onAuthStateChanged } from "firebase/auth";
 import { Dispatch, SetStateAction } from "react";
 import { AppDispatch } from "../app/store";
 import { FirebaseAuth } from "../firebase/config";
-import { login, logout, softLogout } from "./authSlice";
+import { serializeValue } from "../helpers/serializeValue";
+import { login, logout } from "./authSlice";
 
 export const getCurrentUser = async (
   dispatch: AppDispatch,
-  setCheckingAuth: Dispatch<SetStateAction<boolean>>,
-  isEmailVerified: boolean
+  setCheckingAuth: Dispatch<SetStateAction<boolean>>
 ) => {
   try {
     onAuthStateChanged(FirebaseAuth, async (user) => {
+      console.log("Serialized", JSON.parse(JSON.stringify(user)));
       if (!user) return dispatch(logout({ errorMessage: null }));
-
-      const { displayName, email, emailVerified, photoURL, uid } = user;
-
       if (!user.emailVerified)
         return dispatch(
-          // TODO: I should not use this long ObjectSchema. Just use {user, errorMessage and status }
-          softLogout({
-            displayName,
-            email,
-            errorMessage: null,
-            photoURL,
-            status: "authenticated",
-            uid,
-            emailVerified,
+          login({
+            user: serializeValue(user),
+            errorMessage: "email_not_verified",
+            status: "not_authenticated",
           })
         );
       return dispatch(
         login({
-          displayName,
-          email,
+          user: serializeValue(user),
           errorMessage: null,
-          photoURL,
           status: "authenticated",
-          uid,
-          emailVerified,
         })
       );
     });

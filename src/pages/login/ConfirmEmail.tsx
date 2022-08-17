@@ -4,8 +4,8 @@ import { useSnackbar } from "notistack";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { useAppDispatch } from "../../app/hooks";
-import { verifyUser } from "../../auth/authSlice";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { login } from "../../auth/authSlice";
 import { FirebaseAuth } from "../../firebase/config";
 import errorHandler from "../../hooks/errorHandler";
 
@@ -17,10 +17,12 @@ export default function ConfirmEmail() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
+  const { user } = useAppSelector((state) => state.auth);
+
   const verifyEmail = async (verifCode: string) => {
     try {
       await applyActionCode(FirebaseAuth, verifCode);
-      dispatch(verifyUser());
+      dispatch(login({ user, status: "authenticated", errorMessage: null }));
       navigate("/");
     } catch (e) {
       errorHandler(e, enqueueSnackbar, t);

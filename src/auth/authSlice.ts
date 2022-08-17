@@ -1,31 +1,26 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { User } from "firebase/auth";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import {
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+  updateProfile,
+  User,
+} from "firebase/auth";
+import { FirebaseAuth } from "../firebase/config";
 import {
   logoutFirebase,
-  registerWithEmail,
   signInWithEmail,
   signInWithGoole,
 } from "../firebase/providers";
 
 export interface AuthState {
+  user: User | null;
   status: "checking" | "not_authenticated" | "authenticated";
-  uid: string | null;
-  displayName: string | null;
-  email: string | null;
-  photoURL: string | null;
-  emailVerified: boolean;
-  errorMessage: string | null;
-  // TODO: I'm i using this?
-  unverifiedUser?: User;
+  errorMessage: string | null | "email_not_verified";
 }
 
 export const authInitialState: AuthState = {
+  user: null,
   status: "not_authenticated",
-  uid: null,
-  displayName: null,
-  email: null,
-  photoURL: null,
-  emailVerified: false,
   errorMessage: null,
 };
 
@@ -45,17 +40,28 @@ interface RejectValue {
 
 export const startCreatingUserWithEmail = createAsyncThunk<
   AuthState,
-  SignUpInfo,
-  RejectValue
+  SignUpInfo
 >(
   "auth/startCreatingUserWithEmail",
-  async (signUpInfo, { rejectWithValue }) => {
-    const authState = await registerWithEmail(signUpInfo);
-    if (!authState.uid)
-      return rejectWithValue({
-        errorMessage: authState.errorMessage || "Unknown error",
-      });
-    return authState;
+  async ({ email, password, displayName }: SignUpInfo) => {
+    try {
+      const { user } = await createUserWithEmailAndPassword(
+        FirebaseAuth,
+        email,
+        password
+      );
+
+      await updateProfile(user, { displayName });
+      await sendEmailVerification(user);
+
+      return {
+        user,
+        errorMessage: "go_to_your_email_inbox_and_click_the_confirmation_link",
+        status: "not_authenticated",
+      };
+    } catch (e: any) {
+      throw new Error(e.message);
+    }
   }
 );
 
@@ -65,9 +71,9 @@ export const startLoginWithEmail = createAsyncThunk<
   RejectValue
 >("auth/startLoginWithEmail", async (signInInfo, { rejectWithValue }) => {
   const authState = await signInWithEmail(signInInfo);
-  if (!authState.uid)
+  if (!authState.user)
     return rejectWithValue({
-      errorMessage: authState.errorMessage || "Unknown error",
+      errorMessage: authState.errorMessage || "unknown_error",
     });
   return authState;
 });
@@ -76,9 +82,9 @@ export const startGoogleSignIn = createAsyncThunk<AuthState, void, RejectValue>(
   "auth/startGoogleSignIn",
   async (_, { rejectWithValue }) => {
     const authState = await signInWithGoole();
-    if (!authState.uid)
+    if (!authState.user)
       return rejectWithValue({
-        errorMessage: authState.errorMessage || "Unknown error",
+        errorMessage: authState.errorMessage || "unknown_error",
       });
     return authState;
   }
@@ -91,40 +97,15 @@ export const startLogout = createAsyncThunk("auth/startLogout", async () => {
 export const authSlice = createSlice({
   name: "auth",
   initialState: authInitialState,
-  // TODO:  make this state updates shroter. Too many lines
   reducers: {
-    login: (state, { payload }) => {
-      state.status = "authenticated";
-      state.uid = payload.uid;
-      state.displayName = payload.displayName;
-      state.photoURL = payload.photoURL;
-      state.errorMessage = payload.emailVerified ? null : "email_not_verified";
-      state.emailVerified = payload.emailVerified;
-    },
-    logout: (state, { payload }) => ({
+    login: (state, { payload }: PayloadAction<AuthState>) => payload,
+    logout: (
+      state,
+      { payload }: PayloadAction<{ errorMessage: string | null }>
+    ) => ({
       ...authInitialState,
       errorMessage: payload.errorMessage,
     }),
-    softLogout: (state, { payload }) => {
-      state.status = "not_authenticated";
-      state.uid = payload.uid;
-      state.displayName = payload.displayName;
-      state.photoURL = payload.photoURL;
-      state.errorMessage = payload.errorMessage;
-      state.emailVerified = payload.emailVerified;
-    },
-    checkingCredentials: (state) => ({
-      ...state,
-      status: "checking",
-    }),
-    verifyUser: (state) => ({
-      ...state,
-      emailVerified: !!state.uid,
-    }),
-    // TODO: do i use this?
-    setUnverifiedUser: (state, { payload }) => {
-      state.unverifiedUser = payload.user;
-    },
   },
   extraReducers: (builder) => {
     builder
@@ -135,17 +116,20 @@ export const authSlice = createSlice({
         startCreatingUserWithEmail.fulfilled,
         (state, { payload }) => payload
       )
-      .addCase(startCreatingUserWithEmail.rejected, (state, { payload }) => ({
-        ...authInitialState,
-        errorMessage: payload?.errorMessage || "Unknown error",
-      }))
+      .addCase(startCreatingUserWithEmail.rejected, (state, { error }) => {
+        console.log("startCreatingUserWithEmail.rejected payload", error);
+        return {
+          ...authInitialState,
+          errorMessage: error.message || "unknown_error",
+        };
+      })
       .addCase(startLoginWithEmail.pending, (state) => {
         state.status = "checking";
       })
       .addCase(startLoginWithEmail.fulfilled, (state, { payload }) => payload)
       .addCase(startLoginWithEmail.rejected, (state, { payload }) => ({
         ...authInitialState,
-        errorMessage: payload?.errorMessage || "Unknown error",
+        errorMessage: payload?.errorMessage || "unknown_error",
       }))
       .addCase(startGoogleSignIn.pending, (state) => {
         state.status = "checking";
@@ -153,7 +137,7 @@ export const authSlice = createSlice({
       .addCase(startGoogleSignIn.fulfilled, (state, { payload }) => payload)
       .addCase(startGoogleSignIn.rejected, (state, { payload }) => ({
         ...authInitialState,
-        errorMessage: payload?.errorMessage || "Unknown error",
+        errorMessage: payload?.errorMessage || "unknown_error",
       }))
       .addCase(startLogout.pending, (state) => {
         state.status = "checking";
@@ -161,18 +145,11 @@ export const authSlice = createSlice({
       .addCase(startLogout.fulfilled, () => authInitialState)
       .addCase(startLogout.rejected, () => ({
         ...authInitialState,
-        errorMessage: "Unknown error",
+        errorMessage: "unknown_error",
       }));
   },
 });
 
-export const {
-  login,
-  logout,
-  softLogout,
-  checkingCredentials,
-  verifyUser,
-  setUnverifiedUser,
-} = authSlice.actions;
+export const { login, logout } = authSlice.actions;
 
 export default authSlice.reducer;

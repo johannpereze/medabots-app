@@ -36,8 +36,7 @@ export default function Login({ step }: LoginProps) {
   const { enqueueSnackbar } = useSnackbar();
 
   // TODO: change display name
-  const errorMessage = useAppSelector((state) => state.auth.errorMessage);
-  const unverifiedUser = useAppSelector((state) => state.auth.unverifiedUser);
+  const { user, errorMessage } = useAppSelector((state) => state.auth);
 
   // TODO: Change signup to register and organize the terminology
   /*   const signUpSubmit = async ({
@@ -76,7 +75,7 @@ export default function Login({ step }: LoginProps) {
   };
 
   const handleResend = async () => {
-    if (unverifiedUser) sendEmailVerification(unverifiedUser);
+    user && sendEmailVerification(user);
   };
 
   const signInSubmit = ({ email, password }: SignInInfo) => {
@@ -119,7 +118,7 @@ export default function Login({ step }: LoginProps) {
           {step === "register" && <RegisterForm submit={signUpSubmit} />}
           {step === "passwordRecovery" && <RecoveryForm />}
           {step === "login" && <LoginForm submit={signInSubmit} />}
-          {unverifiedUser && (
+          {user && !user.emailVerified && (
             <Button onClick={handleResend}>
               {t("login.resend_confirmation_code")}
             </Button>
