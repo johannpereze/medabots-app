@@ -72,7 +72,7 @@ export const startLoginWithEmail = createAsyncThunk<
   return authState;
 });
 
-export const startGoogleSignIn = createAsyncThunk<AuthState, any, RejectValue>(
+export const startGoogleSignIn = createAsyncThunk<AuthState, void, RejectValue>(
   "auth/startGoogleSignIn",
   async (_, { rejectWithValue }) => {
     const authState = await signInWithGoole();

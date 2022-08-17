@@ -83,7 +83,7 @@ export default function LoginForm({ submit }: LoginFormProps) {
         fullWidth
         startIcon={<Google />}
         disabled={isAuthenticating}
-        onClick={() => dispatch(startGoogleSignIn(null))}
+        onClick={() => dispatch(startGoogleSignIn())}
         sx={{
           textTransform: "none",
           mt: 3,
