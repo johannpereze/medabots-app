@@ -1,22 +1,20 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
   createUserWithEmailAndPassword,
+  GoogleAuthProvider,
   sendEmailVerification,
+  signInWithEmailAndPassword,
+  signInWithPopup,
   updateProfile,
   User,
 } from "firebase/auth";
 import { FirebaseAuth } from "../firebase/config";
-import {
-  logoutFirebase,
-  signInWithEmail,
-  signInWithGoole,
-} from "../firebase/providers";
 import { serializeValue } from "../helpers/serializeValue";
 
 export interface AuthState {
   user: User | null;
   status: "checking" | "not_authenticated" | "authenticated";
-  errorMessage: string | null | "email_not_verified";
+  errorMessage: string | null;
 }
 
 export const authInitialState: AuthState = {
@@ -33,10 +31,6 @@ export interface SignUpInfo {
 export interface SignInInfo {
   email: string;
   password: string;
-}
-
-interface RejectValue {
-  rejectValue: { errorMessage: string };
 }
 
 export const startCreatingUserWithEmail = createAsyncThunk<
@@ -66,33 +60,51 @@ export const startCreatingUserWithEmail = createAsyncThunk<
   }
 );
 
-export const startLoginWithEmail = createAsyncThunk<
-  AuthState,
-  SignInInfo,
-  RejectValue
->("auth/startLoginWithEmail", async (signInInfo, { rejectWithValue }) => {
-  const authState = await signInWithEmail(signInInfo);
-  if (!authState.user)
-    return rejectWithValue({
-      errorMessage: authState.errorMessage || "unknown_error",
-    });
-  return authState;
-});
+export const startLoginWithEmail = createAsyncThunk<AuthState, SignInInfo>(
+  "auth/startLoginWithEmail",
+  async ({ email, password }) => {
+    try {
+      const { user } = await signInWithEmailAndPassword(
+        FirebaseAuth,
+        email,
+        password
+      );
 
-export const startGoogleSignIn = createAsyncThunk<AuthState, void, RejectValue>(
+      return {
+        user: serializeValue(user),
+        errorMessage: user.emailVerified ? null : "email_not_verified",
+        status: user.emailVerified ? "authenticated" : "not_authenticated",
+      };
+    } catch (e) {
+      return { ...authInitialState, errorMessage: `${e}` };
+    }
+  }
+);
+
+export const startGoogleSignIn = createAsyncThunk<AuthState>(
   "auth/startGoogleSignIn",
-  async (_, { rejectWithValue }) => {
-    const authState = await signInWithGoole();
-    if (!authState.user)
-      return rejectWithValue({
-        errorMessage: authState.errorMessage || "unknown_error",
-      });
-    return authState;
+  async () => {
+    try {
+      const { user } = await signInWithPopup(
+        FirebaseAuth,
+        new GoogleAuthProvider()
+      );
+      return {
+        user: serializeValue(user),
+        errorMessage: null,
+        status: "authenticated",
+      };
+    } catch (e) {
+      return {
+        ...authInitialState,
+        errorMessage: `${e}`,
+      };
+    }
   }
 );
 
 export const startLogout = createAsyncThunk("auth/startLogout", async () => {
-  await logoutFirebase();
+  await FirebaseAuth.signOut();
 });
 
 export const authSlice = createSlice({
@@ -128,17 +140,17 @@ export const authSlice = createSlice({
         state.status = "checking";
       })
       .addCase(startLoginWithEmail.fulfilled, (state, { payload }) => payload)
-      .addCase(startLoginWithEmail.rejected, (state, { payload }) => ({
+      .addCase(startLoginWithEmail.rejected, (state, { error }) => ({
         ...authInitialState,
-        errorMessage: payload?.errorMessage || "unknown_error",
+        errorMessage: error.message || "unknown_error",
       }))
       .addCase(startGoogleSignIn.pending, (state) => {
         state.status = "checking";
       })
       .addCase(startGoogleSignIn.fulfilled, (state, { payload }) => payload)
-      .addCase(startGoogleSignIn.rejected, (state, { payload }) => ({
+      .addCase(startGoogleSignIn.rejected, (state, { error }) => ({
         ...authInitialState,
-        errorMessage: payload?.errorMessage || "unknown_error",
+        errorMessage: error.message || "unknown_error",
       }))
       .addCase(startLogout.pending, (state) => {
         state.status = "checking";
