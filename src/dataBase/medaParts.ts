@@ -22,18 +22,23 @@ interface SpriteCoordinates {
   height: number;
   x: number;
   y: number;
+  top: number;
+  left: number;
+  animation: number;
 }
 
 interface Sprite {
   head?: SpriteCoordinates;
   upperArmRight?: SpriteCoordinates;
   lowerArmRight?: SpriteCoordinates;
-  pperArmLeft?: SpriteCoordinates;
+  upperArmLeft?: SpriteCoordinates;
   lowerArmLeft?: SpriteCoordinates;
   upperLegLeft?: SpriteCoordinates;
   lowerLegLeft?: SpriteCoordinates;
   upperLegRight?: SpriteCoordinates;
   lowerLegRight?: SpriteCoordinates;
+  lowerBody?: SpriteCoordinates;
+  upperBody?: SpriteCoordinates;
 }
 
 interface Medaparts {
@@ -48,6 +53,20 @@ interface Medaparts {
   stats: Stats;
   sprite: Sprite;
 }
+
+export interface Medabot {
+  head: string;
+  right: string;
+  left: string;
+  legs: string;
+}
+
+export const metabee: Medabot = {
+  head: "missile",
+  right: "revolver",
+  left: "submachingun",
+  legs: "ochitsuka",
+};
 
 const medaParts: Medaparts[] = [
   {
@@ -74,6 +93,18 @@ const medaParts: Medaparts[] = [
         height: 29,
         x: 590,
         y: 1147,
+        top: 0,
+        left: 11,
+        animation: 1,
+      },
+      upperBody: {
+        width: 16,
+        height: 14,
+        x: 583,
+        y: 1113,
+        top: 29,
+        left: 11,
+        animation: 2,
       },
     },
   },
@@ -102,6 +133,9 @@ const medaParts: Medaparts[] = [
         height: 21,
         x: 605,
         y: 1119,
+        top: 22,
+        left: 0,
+        animation: 3,
       },
 
       lowerArmRight: {
@@ -109,6 +143,9 @@ const medaParts: Medaparts[] = [
         height: 19,
         x: 602,
         y: 1096,
+        top: 43,
+        left: 3,
+        animation: 5,
       },
     },
   },
@@ -133,17 +170,23 @@ const medaParts: Medaparts[] = [
       radiation: 4,
     },
     sprite: {
-      pperArmLeft: {
+      upperArmLeft: {
         width: 10,
         height: 22,
         x: 548,
         y: 1118,
+        top: 21,
+        left: 22,
+        animation: 3,
       },
       lowerArmLeft: {
         width: 17,
         height: 21,
         x: 562,
         y: 1097,
+        top: 41,
+        left: 28,
+        animation: 5,
       },
     },
   },
@@ -167,29 +210,50 @@ const medaParts: Medaparts[] = [
       remoteness: 21,
     },
     sprite: {
+      lowerBody: {
+        width: 16,
+        height: 16,
+        x: 586,
+        y: 1097,
+        top: 43,
+        left: 11,
+        animation: 4,
+      },
       upperLegLeft: {
         width: 8,
         height: 13,
         x: 589,
         y: 1078,
+        top: 49,
+        left: 21,
+        animation: 1,
       },
       lowerLegLeft: {
         width: 21,
         height: 21,
         x: 557,
         y: 1067,
+        top: 62,
+        left: 19,
+        animation: 0,
       },
       upperLegRight: {
         width: 8,
         height: 13,
         x: 589,
         y: 1078,
+        top: 49,
+        left: 12,
+        animation: 1,
       },
       lowerLegRight: {
         width: 19,
         height: 21,
         x: 588,
         y: 1064,
+        top: 62,
+        left: 9,
+        animation: 0,
       },
     },
   },
@@ -197,111 +261,14 @@ const medaParts: Medaparts[] = [
 
 export default medaParts;
 
-/* const spriteSize = { width: 45, height: 83 };
-const spritePosition: Sprite = {
-  upperLegLeft: {
-    width: 8,
-    height: 13,
-    x: 589,
-    y: 1078,
-    top: 49,
-    left: 21,
-    animation: 1,
-  },
-  lowerLegLeft: {
-    width: 21,
-    height: 21,
-    x: 557,
-    y: 1067,
-    top: 62,
-    left: 19,
-    animation: 0,
-  },
-  upperArmLeft: {
-    width: 10,
-    height: 22,
-    x: 548,
-    y: 1118,
-    top: 21,
-    left: 22,
-    animation: 3,
-  },
-  lowerArmLeft: {
-    width: 17,
-    height: 21,
-    x: 562,
-    y: 1097,
-    top: 41,
-    left: 28,
-    animation: 5,
-  },
-
-  lowerBody: {
-    width: 16,
-    height: 16,
-    x: 586,
-    y: 1097,
-    top: 43,
-    left: 11,
-    animation: 4,
-  },
-  upperLegRight: {
-    width: 8,
-    height: 13,
-    x: 589,
-    y: 1078,
-    top: 49,
-    left: 12,
-    animation: 1,
-  },
-
-  lowerLegRight: {
-    width: 19,
-    height: 21,
-    x: 588,
-    y: 1064,
-    top: 62,
-    left: 9,
-    animation: 0,
-  },
-
-  upperBody: {
-    width: 16,
-    height: 14,
-    x: 583,
-    y: 1113,
-    top: 29,
-    left: 11,
-    animation: 2,
-  },
+/* TinPet head:
   head: {
-    width: 30,
-    height: 29,
-    x: 590,
-    y: 1147,
-    top: 0,
+    width: 19,
+    height: 18,
+    x: 849,
+    y: 114,
+    top: 12,
     left: 11,
     animation: 1,
   },
-
-  upperArmRight: {
-    width: 16,
-    height: 21,
-    x: 605,
-    y: 1119,
-    top: 22,
-    left: 0,
-    animation: 3,
-  },
-
-  lowerArmRight: {
-    width: 12,
-    height: 19,
-    x: 602,
-    y: 1096,
-    top: 43,
-    left: 3,
-    animation: 5,
-  },
-};
  */
