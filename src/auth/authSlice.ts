@@ -130,7 +130,6 @@ export const authSlice = createSlice({
         (state, { payload }) => payload
       )
       .addCase(startCreatingUserWithEmail.rejected, (state, { error }) => {
-        console.log("startCreatingUserWithEmail.rejected payload", error);
         return {
           ...authInitialState,
           errorMessage: error.message || "unknown_error",

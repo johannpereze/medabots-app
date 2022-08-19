@@ -14,7 +14,7 @@ interface LoginFormProps {
   submit: ({ email, password }: SignInInfo) => void;
 }
 export default function LoginForm({ submit }: LoginFormProps) {
-  const { t } = useTranslation();
+  const [t] = useTranslation();
   const dispatch = useAppDispatch();
   const [searchParams] = useSearchParams();
   const { status } = useAppSelector((state) => state.auth);
@@ -36,7 +36,6 @@ export default function LoginForm({ submit }: LoginFormProps) {
     },
     validationSchema,
     onSubmit: (values) => {
-      console.log("submit", values);
       submit(values);
     },
     validateOnBlur: true,

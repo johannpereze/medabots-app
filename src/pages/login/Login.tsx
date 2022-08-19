@@ -20,7 +20,7 @@ import {
 } from "../../auth/authSlice";
 import LanguageSelector from "../../components/languageSelector/LanguageSelector";
 import ThemeSelector from "../../components/themeSelector/ThemeSelector";
-import errorHandler from "../../hooks/errorHandler";
+import errorHandler from "../../helpers/errorHandler";
 import LoginForm from "./LoginForm";
 import RecoveryForm from "./RecoveryForm";
 import RegisterForm from "./RegisterForm";
@@ -31,7 +31,7 @@ interface LoginProps {
 
 export default function Login({ step }: LoginProps) {
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const [t] = useTranslation();
   const dispatch = useAppDispatch();
   const { enqueueSnackbar } = useSnackbar();
 

@@ -29,7 +29,7 @@ interface RegisterFormProps {
 
 export default function RegisterForm({ submit }: RegisterFormProps) {
   const [termsChecked, setTermsChecked] = useState(false);
-  const { t } = useTranslation();
+  const [t] = useTranslation();
   const navigate = useNavigate();
   const validationSchema = yup.object({
     firstName: yup

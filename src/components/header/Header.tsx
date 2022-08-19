@@ -1,8 +1,7 @@
 import AccountCircle from "@mui/icons-material/AccountCircle";
-import BadgeIcon from "@mui/icons-material/Badge";
 import MenuIcon from "@mui/icons-material/Menu";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import SmartToyIcon from "@mui/icons-material/SmartToy";
+import { ListItemIcon, ListItemText } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Badge from "@mui/material/Badge";
 import Box from "@mui/material/Box";
@@ -14,11 +13,19 @@ import Typography from "@mui/material/Typography";
 import { KeyboardEvent, MouseEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useAppDispatch } from "../../app/hooks";
-import { startLogout } from "../../auth/authSlice";
 import toggleMenuDrawer from "../../helpers/toggleMenuDrawer";
-import MenuDrawer, { DrawerItem } from "../menuDrawer/MenuDrawer";
 
-export default function Header() {
+export interface MenuItemType {
+  label: string;
+  icon: JSX.Element;
+  onClick: () => void;
+}
+
+interface HeaderProps {
+  menuItems: MenuItemType[];
+}
+
+export default function Header({ menuItems }: HeaderProps) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [t] = useTranslation();
   const dispatch = useAppDispatch();
@@ -37,23 +44,6 @@ export default function Header() {
     toggleMenuDrawer({ event, dispatch });
   };
 
-  const handleLogout = async () => await dispatch(startLogout());
-
-  const drawerItems: DrawerItem[] = [
-    {
-      name: "user_settings",
-      label: t("general.user_settings"),
-      icon: <BadgeIcon />,
-      onClick: () => {},
-    },
-    {
-      name: "medabot_creation",
-      label: t("medabots.medabot_creation"),
-      icon: <SmartToyIcon />,
-      onClick: () => {},
-    },
-  ];
-
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
@@ -69,9 +59,12 @@ export default function Header() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-      <MenuItem onClick={handleLogout}>Sign Out</MenuItem>
+      {menuItems.map(({ icon, label, onClick }) => (
+        <MenuItem onClick={onClick} key={label}>
+          <ListItemIcon>{icon}</ListItemIcon>
+          <ListItemText>{t(label)}</ListItemText>
+        </MenuItem>
+      ))}
     </Menu>
   );
 
@@ -119,7 +112,6 @@ export default function Header() {
         </Toolbar>
       </AppBar>
       {renderMenu}
-      <MenuDrawer drawerItems={drawerItems} />
     </Box>
   );
 }

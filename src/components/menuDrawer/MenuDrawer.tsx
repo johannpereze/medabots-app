@@ -1,4 +1,3 @@
-import LogoutIcon from "@mui/icons-material/Logout";
 import {
   Box,
   Divider,
@@ -9,7 +8,6 @@ import {
   SwipeableDrawer,
 } from "@mui/material";
 import { KeyboardEvent, MouseEvent } from "react";
-import { useTranslation } from "react-i18next";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { RootState } from "../../app/store";
 import toggleMenuDrawer from "../../helpers/toggleMenuDrawer";
@@ -26,7 +24,6 @@ interface MenuDrawerProps {
 }
 
 export default function MenuDrawer({ drawerItems }: MenuDrawerProps) {
-  const { t } = useTranslation();
   const { showDrawer } = useAppSelector((state: RootState) => state.header);
   const dispatch = useAppDispatch();
 
@@ -41,6 +38,7 @@ export default function MenuDrawer({ drawerItems }: MenuDrawerProps) {
       onClick={toggleDrawer}
       onKeyDown={toggleDrawer}
     >
+      {/* TODO: support personalized components here */}
       <List>
         {drawerItems.map(({ name, label, icon, onClick }) => (
           <ListItem button key={name} onClick={onClick}>
@@ -50,14 +48,7 @@ export default function MenuDrawer({ drawerItems }: MenuDrawerProps) {
         ))}
       </List>
       <Divider />
-      <List>
-        <ListItem button>
-          <ListItemIcon>
-            <LogoutIcon />
-          </ListItemIcon>
-          <ListItemText primary={t("login.sign_out")} />
-        </ListItem>
-      </List>
+      {/* TODO: support personalized components here */}
     </Box>
   );
 

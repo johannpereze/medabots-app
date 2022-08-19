@@ -11,7 +11,6 @@ export const getCurrentUser = async (
 ) => {
   try {
     onAuthStateChanged(FirebaseAuth, async (user) => {
-      console.log("Serialized", JSON.parse(JSON.stringify(user)));
       if (!user || !user.emailVerified)
         return dispatch(logout({ errorMessage: null }));
       return dispatch(

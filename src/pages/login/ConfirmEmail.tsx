@@ -7,7 +7,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { login } from "../../auth/authSlice";
 import { FirebaseAuth } from "../../firebase/config";
-import errorHandler from "../../hooks/errorHandler";
+import errorHandler from "../../helpers/errorHandler";
 
 export default function ConfirmEmail() {
   const [t] = useTranslation();

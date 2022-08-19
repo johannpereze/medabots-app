@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
 
 export default function RecoveryForm() {
-  const { t } = useTranslation();
+  const [t] = useTranslation();
   const navigate = useNavigate();
   const validationSchema = yup.object({
     email: yup
