@@ -11,6 +11,7 @@ import {
   signInWithEmail,
   signInWithGoole,
 } from "../firebase/providers";
+import { serializeValue } from "../helpers/serializeValue";
 
 export interface AuthState {
   user: User | null;
@@ -55,7 +56,7 @@ export const startCreatingUserWithEmail = createAsyncThunk<
       await sendEmailVerification(user);
 
       return {
-        user,
+        user: serializeValue(user),
         errorMessage: "go_to_your_email_inbox_and_click_the_confirmation_link",
         status: "not_authenticated",
       };

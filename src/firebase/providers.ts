@@ -4,6 +4,7 @@ import {
   signInWithPopup,
 } from "firebase/auth";
 import { authInitialState, AuthState, SignInInfo } from "../auth/authSlice";
+import { serializeValue } from "../helpers/serializeValue";
 import { FirebaseAuth } from "./config";
 
 const googleProvider = new GoogleAuthProvider();
@@ -12,7 +13,7 @@ export const signInWithGoole = async (): Promise<AuthState> => {
   try {
     const { user } = await signInWithPopup(FirebaseAuth, googleProvider);
     return {
-      user,
+      user: serializeValue(user),
       errorMessage: null,
       status: "authenticated",
     };
@@ -64,7 +65,7 @@ export const signInWithEmail = async ({
     );
     // const { uid, photoURL, displayName, emailVerified } = user;
     return {
-      user,
+      user: serializeValue(user),
       errorMessage: user.emailVerified ? null : "email_not_verified",
       // photoURL,
       status: user.emailVerified ? "authenticated" : "not_authenticated",
