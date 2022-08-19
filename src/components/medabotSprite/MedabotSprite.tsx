@@ -80,7 +80,6 @@ export default function MedabotSprite({
 
     const fullSprite: Sprite = newSprite;
 
-    console.log("fullSprite", fullSprite);
     return fullSprite;
   };
 

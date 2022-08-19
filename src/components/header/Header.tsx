@@ -1,7 +1,7 @@
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import MenuIcon from "@mui/icons-material/Menu";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import { ListItemIcon, ListItemText } from "@mui/material";
+import { Divider, ListItemIcon, ListItemText } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Badge from "@mui/material/Badge";
 import Box from "@mui/material/Box";
@@ -23,9 +23,10 @@ export interface MenuItemType {
 
 interface HeaderProps {
   menuItems: MenuItemType[];
+  userName: string;
 }
 
-export default function Header({ menuItems }: HeaderProps) {
+export default function Header({ menuItems, userName }: HeaderProps) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [t] = useTranslation();
   const dispatch = useAppDispatch();
@@ -59,6 +60,10 @@ export default function Header({ menuItems }: HeaderProps) {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
+      <MenuItem disabled>
+        <ListItemText>{userName}</ListItemText>
+      </MenuItem>
+      <Divider />
       {menuItems.map(({ icon, label, onClick }) => (
         <MenuItem onClick={onClick} key={label}>
           <ListItemIcon>{icon}</ListItemIcon>
@@ -88,13 +93,13 @@ export default function Header({ menuItems }: HeaderProps) {
             component="div"
             sx={{ display: { xs: "none", sm: "block" } }}
           >
-            MUI
+            App
           </Typography>
 
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: "flex" }}>
             <IconButton size="large" color="inherit">
-              <Badge badgeContent={3} color="error">
+              <Badge badgeContent={0} color="error">
                 <NotificationsIcon />
               </Badge>
             </IconButton>
