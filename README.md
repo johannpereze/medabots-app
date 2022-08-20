@@ -1,3 +1,5 @@
-# React TS Vite MUI Redux-Toolkit Template
+# Medabots Fan App
 
-This is a template for starting a new project with all the basic configurations I always use in my projects, like the main libraries and linter configurations
+Deploy: [GithubPages](https://johannpereze.github.io/medabots-app/)
+
+Just having fun with my favorite underrated anime :)
