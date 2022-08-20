@@ -93,7 +93,7 @@ export default function Header({ menuItems, userName }: HeaderProps) {
             component="div"
             sx={{ display: { xs: "none", sm: "block" } }}
           >
-            App
+            Medabots
           </Typography>
 
           <Box sx={{ flexGrow: 1 }} />

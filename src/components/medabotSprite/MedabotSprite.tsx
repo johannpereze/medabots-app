@@ -184,7 +184,6 @@ export default function MedabotSprite({
         ease-in-out infinite;`
           : "none"};
       `;
-      // breathing-rotate 3s ease-in-out infinite
       meda.push(<Part />);
     });
     return meda;

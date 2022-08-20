@@ -1,6 +1,17 @@
-import MedabotSprite from "../../components/medabotSprite/MedabotSprite";
-import { metabee } from "../../dataBase/medaParts";
+import { Grid } from "@mui/material";
+import PartsSelector from "../../components/partsSelector/PartsSelector";
 
 export default function Home() {
-  return <MedabotSprite scale={4} animated medaparts={metabee} />;
+  return (
+    <>
+      <Grid container spacing={0} sx={{ my: 2 }}>
+        <Grid item xs={12} md={6}>
+          <PartsSelector />
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <PartsSelector />
+        </Grid>
+      </Grid>
+    </>
+  );
 }
