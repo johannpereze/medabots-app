@@ -9,22 +9,97 @@ import {
   Paper,
   Typography,
 } from "@mui/material";
-import { metabee } from "../../dataBase/medaParts";
+import { useState } from "react";
+import medaPartsDB, { Medabot, Medaparts } from "../../dataBase/medaParts";
 import MedabotSprite from "../medabotSprite/MedabotSprite";
 
-export default function PartsSelector() {
-  const parts = Object.values(metabee);
+interface PartsSelectorProps {
+  medaParts: Medabot;
+}
+
+export default function PartsSelector({ medaParts }: PartsSelectorProps) {
+  const [medabot, setMedabot] = useState(medaParts);
+
+  const getAvailableParts = (allParts: Medaparts[]) => {
+    const availableParts: {
+      head: string[];
+      right: string[];
+      left: string[];
+      legs: string[];
+    } = {
+      head: [],
+      right: [],
+      left: [],
+      legs: [],
+    };
+    allParts.forEach((mp) => {
+      switch (mp.part) {
+        case "head":
+          availableParts.head.push(mp.name);
+          break;
+        case "left arm":
+          availableParts.left.push(mp.name);
+          break;
+        case "right arm":
+          availableParts.right.push(mp.name);
+          break;
+        case "legs":
+          availableParts.legs.push(mp.name);
+          break;
+        default:
+          break;
+      }
+    });
+    return availableParts;
+  };
+
+  const availableParts = getAvailableParts(medaPartsDB);
+
+  const handlePartChange = (part: string, partName: string) => {
+    console.log(
+      "part",
+      part,
+      "partName",
+      partName,
+      "Next part: ",
+      availableParts[part as keyof typeof availableParts][
+        availableParts.head.indexOf(partName) + 1
+      ] || availableParts[part as keyof typeof availableParts][0]
+    );
+    setMedabot({
+      ...medabot,
+      [part]:
+        availableParts[part as keyof typeof availableParts][
+          availableParts[part as keyof typeof availableParts].indexOf(
+            partName
+          ) + 1
+        ] || availableParts[part as keyof typeof availableParts][0],
+    });
+  };
+
+  // console.log("availableParts", availableParts);
+  console.log("medabot", medabot);
+
+  /*   const tinpetMale: Medabot = {
+    head: "tinpet male head",
+    right: "tinpet male right arm",
+    left: "tinpet male left arm",
+    legs: "tinpet male legs",
+  }; */
+
+  /*   const handlePartChange = (part: string) => {
+    setMedabot({ ...medabot, [part]: "missile" });
+  }; */
 
   return (
-    <Card sx={{ display: "flex", my: 1, mx: 4, p: 4 }}>
-      <Paper elevation={0} sx={{ p: 2 }}>
-        <MedabotSprite scale={2} animated medaparts={metabee} />
+    <Card sx={{ display: "flex", my: 1, mx: 2, p: 2 }}>
+      <Paper elevation={0} sx={{ p: 1, backgroundColor: "white" }}>
+        <MedabotSprite scale={2} animated medaparts={medabot} />
       </Paper>
-      {/* {metabee} */}
-      <CardContent>
+      <CardContent sx={{ p: 0 }}>
         <Box sx={{ display: "flex", flexDirection: "column" }}>
           <Grid container spacing={0}>
-            {parts.map((part) => (
+            {Object.entries(medabot).map(([part, partName]) => (
               <>
                 <Grid
                   item
@@ -32,12 +107,14 @@ export default function PartsSelector() {
                   sx={{ display: "flex", justifyContent: "center" }}
                 >
                   <IconButton>
-                    <ChevronLeftIcon />
+                    <ChevronLeftIcon
+                      onClick={() => handlePartChange(part, partName)}
+                    />
                   </IconButton>
                 </Grid>
                 <Grid item xs={8}>
                   <Typography variant="h6" align="center">
-                    {part}
+                    {partName}
                   </Typography>
                 </Grid>
                 <Grid
@@ -46,36 +123,14 @@ export default function PartsSelector() {
                   sx={{ display: "flex", justifyContent: "center" }}
                 >
                   <IconButton>
-                    <ChevronRightIcon />
+                    <ChevronRightIcon
+                      onClick={() => handlePartChange(part, partName)}
+                    />
                   </IconButton>
                 </Grid>
               </>
             ))}
           </Grid>
-          {/* <TableContainer component={Box}>
-            <Table sx={{ width: "100%" }}>
-              <TableBody>
-                {parts.map((part) => (
-                  <TableRow
-                    key={part.name}
-                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                  >
-                    <TableCell component="th" scope="row">
-                      <IconButton>
-                        <SkipPreviousIcon />
-                      </IconButton>
-                    </TableCell>
-                    <TableCell align="right">{part}</TableCell>
-                    <TableCell align="right">
-                      <IconButton>
-                        <SkipNextIcon />
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer> */}
         </Box>
       </CardContent>
     </Card>
