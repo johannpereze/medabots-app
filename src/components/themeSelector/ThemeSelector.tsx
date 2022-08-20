@@ -12,7 +12,7 @@ import {
 export default function ThemeSelector() {
   const theme = useTheme();
   const dispatch = useAppDispatch();
-  const { t } = useTranslation();
+  const [t] = useTranslation();
 
   const toggleThemeStyle = () => {
     dispatch(changeThemeStyle());

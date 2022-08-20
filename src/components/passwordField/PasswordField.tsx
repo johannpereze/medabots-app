@@ -49,13 +49,13 @@ export default function PasswordField({
   };
 
   return (
-    <FormControl variant="outlined">
+    <FormControl fullWidth={fullWidth} variant="outlined">
       <InputLabel error={error} htmlFor={name}>
         {label}
       </InputLabel>
 
       <MuiOutlinedInput
-        fullWidth={fullWidth}
+        fullWidth
         id={name}
         type={showPassword ? "text" : "password"}
         name={name}

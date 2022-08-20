@@ -3,26 +3,16 @@ import {
   FLUSH,
   PAUSE,
   PERSIST,
-  persistReducer,
   persistStore,
   PURGE,
   REGISTER,
   REHYDRATE,
 } from "redux-persist";
-import storage from "redux-persist/lib/storage";
-// Change Slice to Reducer because the export ir fooSlice.reducer
+
 import rootReducer from "./rootReducer";
 
-const persistConfig = {
-  key: "root",
-  version: 1,
-  storage,
-};
-
-const persistedReducer = persistReducer(persistConfig, rootReducer);
-
 export const store = configureStore({
-  reducer: persistedReducer,
+  reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {

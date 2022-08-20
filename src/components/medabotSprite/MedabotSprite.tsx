@@ -1,5 +1,7 @@
 import styled from "@emotion/styled";
 import { Box } from "@mui/material";
+import { useEffect } from "react";
+import medaParts, { Medabot } from "../../dataBase/medaParts";
 import { width as mainSpritesWidth } from "../../static/images/mainSprites.json";
 
 interface Position {
@@ -27,118 +29,64 @@ interface Sprite {
 }
 
 const spriteSize = { width: 45, height: 83 };
-const spritePosition: Sprite = {
-  upperLegLeft: {
-    width: 8,
-    height: 13,
-    x: 589,
-    y: 1078,
-    top: 49,
-    left: 21,
-    animation: 1,
-  },
-  lowerLegLeft: {
-    width: 21,
-    height: 21,
-    x: 557,
-    y: 1067,
-    top: 62,
-    left: 19,
-    animation: 0,
-  },
-  upperArmLeft: {
-    width: 10,
-    height: 22,
-    x: 548,
-    y: 1118,
-    top: 21,
-    left: 22,
-    animation: 3,
-  },
-  lowerArmLeft: {
-    width: 17,
-    height: 21,
-    x: 562,
-    y: 1097,
-    top: 41,
-    left: 28,
-    animation: 5,
-  },
-
-  lowerBody: {
-    width: 16,
-    height: 16,
-    x: 586,
-    y: 1097,
-    top: 43,
-    left: 11,
-    animation: 4,
-  },
-  upperLegRight: {
-    width: 8,
-    height: 13,
-    x: 589,
-    y: 1078,
-    top: 49,
-    left: 12,
-    animation: 1,
-  },
-
-  lowerLegRight: {
-    width: 19,
-    height: 21,
-    x: 588,
-    y: 1064,
-    top: 62,
-    left: 9,
-    animation: 0,
-  },
-
-  upperBody: {
-    width: 16,
-    height: 14,
-    x: 583,
-    y: 1113,
-    top: 29,
-    left: 11,
-    animation: 2,
-  },
-  head: {
-    width: 30,
-    height: 29,
-    x: 590,
-    y: 1147,
-    top: 0,
-    left: 11,
-    animation: 1,
-  },
-
-  upperArmRight: {
-    width: 16,
-    height: 21,
-    x: 605,
-    y: 1119,
-    top: 22,
-    left: 0,
-    animation: 3,
-  },
-
-  lowerArmRight: {
-    width: 12,
-    height: 19,
-    x: 602,
-    y: 1096,
-    top: 43,
-    left: 3,
-    animation: 5,
-  },
-};
 
 interface MedabotSpriteProps {
   scale?: number;
+  animated?: boolean;
+  medaparts: Medabot;
 }
 
-export default function MedabotSprite({ scale = 1 }: MedabotSpriteProps) {
+export default function MedabotSprite({
+  scale = 1,
+  animated,
+  medaparts,
+}: MedabotSpriteProps) {
+  const dbSpritePosition = (_medaparts: Medabot): Sprite => {
+    // TODO: any
+    const newSprite: any = {};
+    newSprite.lowerLegLeft = medaParts.filter(
+      (mp) => mp.name === _medaparts.legs
+    )[0].sprite.lowerLegLeft;
+    newSprite.upperArmLeft = medaParts.filter(
+      (mp) => mp.name === _medaparts.left
+    )[0].sprite.upperArmLeft;
+    newSprite.lowerArmLeft = medaParts.filter(
+      (mp) => mp.name === _medaparts.left
+    )[0].sprite.lowerArmLeft;
+    newSprite.upperLegLeft = medaParts.filter(
+      (mp) => mp.name === _medaparts.legs
+    )[0].sprite.upperLegLeft;
+    newSprite.lowerBody = medaParts.filter(
+      (mp) => mp.name === _medaparts.legs
+    )[0].sprite.lowerBody;
+    newSprite.upperLegRight = medaParts.filter(
+      (mp) => mp.name === _medaparts.legs
+    )[0].sprite.upperLegRight;
+    newSprite.lowerLegRight = medaParts.filter(
+      (mp) => mp.name === _medaparts.legs
+    )[0].sprite.lowerLegRight;
+    newSprite.upperBody = medaParts.filter(
+      (mp) => mp.name === _medaparts.head
+    )[0].sprite.upperBody;
+    newSprite.head = medaParts.filter(
+      (mp) => mp.name === _medaparts.head
+    )[0].sprite.head;
+    newSprite.upperArmRight = medaParts.filter(
+      (mp) => mp.name === _medaparts.right
+    )[0].sprite.upperArmRight;
+    newSprite.lowerArmRight = medaParts.filter(
+      (mp) => mp.name === _medaparts.right
+    )[0].sprite.lowerArmRight;
+
+    const fullSprite: Sprite = newSprite;
+
+    return fullSprite;
+  };
+
+  useEffect(() => {
+    dbSpritePosition(medaparts);
+  }, []);
+
   const medabot = (_spritePosition: Sprite) => {
     const meda: JSX.Element[] = [];
     Object.keys(_spritePosition).forEach((key) => {
@@ -223,7 +171,7 @@ export default function MedabotSprite({ scale = 1 }: MedabotSpriteProps) {
 
         height: ${_spritePosition[key as keyof Sprite].height * scale}px;
         width: ${_spritePosition[key as keyof Sprite].width * scale}px;
-        background: url("https://raw.githubusercontent.com/johannpereze/medabots-app/main/src/static/images/mainSprites.png")
+        background: url("https://firebasestorage.googleapis.com/v0/b/medabotsapp.appspot.com/o/main-sprites.png?alt=media&token=4430ae60-1d69-491a-80cd-160fdf585e3b")
           ${_spritePosition[key as keyof Sprite].x * scale}px
           ${_spritePosition[key as keyof Sprite].y * scale}px;
         image-rendering: pixelated;
@@ -231,10 +179,11 @@ export default function MedabotSprite({ scale = 1 }: MedabotSpriteProps) {
         position: absolute;
         top: ${_spritePosition[key as keyof Sprite].top * scale}px;
         left: ${_spritePosition[key as keyof Sprite].left * scale}px;
-        animation: breathing-${_spritePosition[key as keyof Sprite].animation} 2s
-          ease-in-out infinite;
+        animation: ${animated
+          ? `breathing-${_spritePosition[key as keyof Sprite].animation} 2s
+        ease-in-out infinite;`
+          : "none"};
       `;
-      // breathing-rotate 3s ease-in-out infinite
       meda.push(<Part />);
     });
     return meda;
@@ -252,7 +201,7 @@ export default function MedabotSprite({ scale = 1 }: MedabotSpriteProps) {
     Head,
     UpperArmRight,
     LowerArmRight,
-  ] = medabot(spritePosition);
+  ] = medabot(dbSpritePosition(medaparts));
 
   return (
     <>

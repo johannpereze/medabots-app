@@ -1,22 +1,26 @@
+import { Google } from "@mui/icons-material";
 import { LoadingButton } from "@mui/lab";
-import { Box, Link, TextField, Typography } from "@mui/material";
+import { Box, Button, Link, TextField, Typography } from "@mui/material";
 import { useFormik } from "formik";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { NavLink } from "react-router-dom";
+import { NavLink, useSearchParams } from "react-router-dom";
 import * as yup from "yup";
-import { useAppSelector } from "../../app/hooks";
-import { LoginValues, SetSubmitting } from "../../auth/signIn";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { SignInInfo, startGoogleSignIn } from "../../auth/authSlice";
 import PasswordField from "../../components/passwordField/PasswordField";
 
 interface LoginFormProps {
-  submit: (
-    { email, password }: LoginValues,
-    setSubmitting: SetSubmitting
-  ) => void;
+  submit: ({ email, password }: SignInInfo) => void;
 }
 export default function LoginForm({ submit }: LoginFormProps) {
-  const { t } = useTranslation();
-  const confirmedEmil = useAppSelector((state) => state.auth.confirmed_email);
+  const [t] = useTranslation();
+  const dispatch = useAppDispatch();
+  const [searchParams] = useSearchParams();
+  const { status } = useAppSelector((state) => state.auth);
+
+  const isAuthenticating = useMemo(() => status === "checking", [status]);
+
   const validationSchema = yup.object({
     email: yup.string().email().required(t("errors.login.email_is_required")),
     password: yup
@@ -27,12 +31,12 @@ export default function LoginForm({ submit }: LoginFormProps) {
 
   const formik = useFormik({
     initialValues: {
-      email: confirmedEmil || "",
+      email: searchParams.get("email") || "",
       password: "",
     },
     validationSchema,
-    onSubmit: (values, { setSubmitting }) => {
-      submit(values, setSubmitting);
+    onSubmit: (values) => {
+      submit(values);
     },
     validateOnBlur: true,
     validateOnMount: true,
@@ -68,12 +72,27 @@ export default function LoginForm({ submit }: LoginFormProps) {
         fullWidth
         variant="contained"
         type="submit"
-        disabled={formik.isSubmitting || !formik.isValid}
+        disabled={!formik.isValid || isAuthenticating}
         sx={{ mt: 3 }}
-        loading={formik.isSubmitting}
+        loading={isAuthenticating}
       >
         {t("login.log_in")}
       </LoadingButton>
+      <Button
+        fullWidth
+        startIcon={<Google />}
+        disabled={isAuthenticating}
+        onClick={() => dispatch(startGoogleSignIn())}
+        sx={{
+          textTransform: "none",
+          mt: 3,
+          color: "white",
+          backgroundColor: "#4285f4",
+        }}
+        variant="contained"
+      >
+        {t("login.log_in_with_google")}
+      </Button>
       <Typography
         sx={{ display: "flex", justifyContent: "end", mt: 2, mb: 1 }}
         variant="body2"

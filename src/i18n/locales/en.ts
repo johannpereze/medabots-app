@@ -10,8 +10,12 @@ const en = {
       save: "Save",
       terms_and_conditions: "Terms and conditions",
       user_settings: "User settings",
+      module_a: "Module A",
     },
     errors: {
+      email_not_verified: "Email not verified",
+      go_to_your_email_inbox_and_click_the_confirmation_link:
+        "Go to your email inbox and click the confirmation link",
       login: {
         confirmation_code_is_required: "Confirmation code is required",
         confirmation_code_should_be_a_6_digits_number:
@@ -60,6 +64,7 @@ const en = {
         "We will send to your inbox the instructions to reset your password",
       last_name: "Last name",
       log_in: "Log in",
+      log_in_with_google: "Log in with Google",
       name: "Name",
       not_registered: "Not registered?",
       password: "Password",
@@ -68,11 +73,14 @@ const en = {
         "Past here the code we sent to your registered email",
       recover_password: "Recover password",
       repeat_password: "Repeat password",
-      send_code_again: "Send code again",
+      resend_confirmation_code: "Resend confirmation code",
       sign_out: "Sign out",
       user_name: "User name",
       username: "Username",
       wait_for_resend: "Wait for resend:",
+    },
+    medabots: {
+      medabot_creation: "Medabot creation",
     },
   },
 };
