@@ -28,6 +28,9 @@ export default function ThemeManager({ children }: ThemeManagerProps) {
   const customTheme = useMemo(
     () =>
       createTheme({
+        typography: {
+          fontFamily: ["Silkscreen"].join(","),
+        },
         palette: {
           mode: paletteMode(),
           ...(paletteMode() === "light"
@@ -42,7 +45,7 @@ export default function ThemeManager({ children }: ThemeManagerProps) {
                 // palette values for dark mode
                 background: {
                   paper: "#121212",
-                  default: "#121212",
+                  default: "#252e38",
                 },
               }),
         },
