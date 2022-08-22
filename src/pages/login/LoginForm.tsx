@@ -1,6 +1,6 @@
 import { Google } from "@mui/icons-material";
 import { LoadingButton } from "@mui/lab";
-import { Box, Button, Link, TextField, Typography } from "@mui/material";
+import { Box, Button, Link, Typography } from "@mui/material";
 import { useFormik } from "formik";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
@@ -8,6 +8,7 @@ import { NavLink, useSearchParams } from "react-router-dom";
 import * as yup from "yup";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { SignInInfo, startGoogleSignIn } from "../../auth/authSlice";
+import IndustrialTextField from "../../components/industrialtextField/IndustrialTextField";
 import PasswordField from "../../components/passwordField/PasswordField";
 
 interface LoginFormProps {
@@ -45,7 +46,7 @@ export default function LoginForm({ submit }: LoginFormProps) {
   return (
     <Box component="form" onSubmit={formik.handleSubmit}>
       <Box sx={{ mt: 2, mb: 0 }}>
-        <TextField
+        <IndustrialTextField
           fullWidth
           name="email"
           label={t("login.email")}
