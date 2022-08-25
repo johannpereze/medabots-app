@@ -1,6 +1,5 @@
 import { Google } from "@mui/icons-material";
-import { LoadingButton } from "@mui/lab";
-import { Box, Button, Link, Typography } from "@mui/material";
+import { Box, Link, Typography } from "@mui/material";
 import { useFormik } from "formik";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
@@ -8,6 +7,8 @@ import { NavLink, useSearchParams } from "react-router-dom";
 import * as yup from "yup";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { SignInInfo, startGoogleSignIn } from "../../auth/authSlice";
+import IndustrialButton from "../../components/industrialButton/IndustrialButton";
+import IndustrialLoadingButton from "../../components/industrialLoadingButton/IndustrialLoadingButton";
 import IndustrialTextField from "../../components/industrialtextField/IndustrialTextField";
 import PasswordField from "../../components/passwordField/PasswordField";
 
@@ -69,31 +70,32 @@ export default function LoginForm({ submit }: LoginFormProps) {
           helperText={formik.touched.password && formik.errors.password}
         />
       </Box>
-      <LoadingButton
+      <IndustrialLoadingButton
         fullWidth
-        variant="contained"
         type="submit"
         disabled={!formik.isValid || isAuthenticating}
         sx={{ mt: 3 }}
         loading={isAuthenticating}
+        variant="contained"
       >
         {t("login.log_in")}
-      </LoadingButton>
-      <Button
+      </IndustrialLoadingButton>
+      <IndustrialButton
         fullWidth
         startIcon={<Google />}
         disabled={isAuthenticating}
         onClick={() => dispatch(startGoogleSignIn())}
         sx={{
-          textTransform: "none",
-          mt: 3,
-          color: "white",
-          backgroundColor: "#4285f4",
+          // textTransform: "none",
+          mt: 1,
+          // color: "white",
+          // backgroundColor: "#4285f4",
         }}
         variant="contained"
+        color="secondary"
       >
-        {t("login.log_in_with_google")}
-      </Button>
+        {t("login.google_log_in")}
+      </IndustrialButton>
       <Typography
         sx={{ display: "flex", justifyContent: "end", mt: 2, mb: 1 }}
         variant="body2"

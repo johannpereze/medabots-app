@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import medaPartsDB, { Medabot, Medaparts } from "../../dataBase/medaParts";
-import IndustrialPaper from "../industrialPaper/IndustrialPaper";
+import IndustrialBox from "../industrialBox/IndustrialBox";
 import MedabotSprite from "../medabotSprite/MedabotSprite";
 
 interface PartsSelectorProps {
@@ -100,9 +100,9 @@ export default function PartsSelector({ medaParts }: PartsSelectorProps) {
         p: 2,
       }}
     >
-      <IndustrialPaper>
+      <IndustrialBox>
         <MedabotSprite scale={2} animated medaparts={medabot} />
-      </IndustrialPaper>
+      </IndustrialBox>
       <CardContent sx={{ p: 0 }}>
         <Box sx={{ display: "flex", flexDirection: "column" }}>
           <Grid container spacing={0}>
