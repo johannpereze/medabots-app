@@ -1,3 +1,4 @@
+import type {} from "@mui/lab/themeAugmentation";
 import {
   createTheme,
   CssBaseline,
@@ -49,6 +50,103 @@ export default function ThemeManager({ children }: ThemeManagerProps) {
       createTheme({
         typography: {
           fontFamily: ["Silkscreen"].join(","),
+        },
+        components: {
+          MuiButton: {
+            styleOverrides: {
+              containedPrimary: ({ ownerState, theme }) => ({
+                borderBottom: `2px solid ${theme.palette.primary.dark}`,
+                borderRadius: "0px",
+                borderTop: `3px solid ${theme.palette.primary.light}`,
+                boxShadow: "none",
+                color: "white",
+                filter: theme.filters.dropShadow,
+                height: "33px",
+                position: "relative",
+                "&::before": {
+                  content: '""',
+                  height: "28px",
+                  width: "2px",
+                  backgroundColor: theme.palette.primary.light,
+                  position: "absolute",
+                  left: "-2px",
+                },
+                "&::after": {
+                  content: '""',
+                  height: "28px",
+                  width: "3px",
+                  backgroundColor: theme.palette.primary.dark,
+                  position: "absolute",
+                  right: "-3px",
+                },
+                "&:hover": {
+                  filter: `${theme.filters.brightnessHover}`,
+                  backgroundColor: theme.palette.primary.main,
+                  boxShadow: "none",
+                },
+                "&.Mui-disabled": {
+                  backgroundColor: theme.palette.primary.main,
+                  filter: `${theme.filters.brightnessDisabled} ${theme.filters.dropShadow}`,
+                },
+              }),
+              containedSecondary: ({ ownerState, theme }) => ({
+                borderBottom: `2px solid ${theme.palette.secondary.dark}`,
+                borderRadius: "0px",
+                borderTop: `3px solid ${theme.palette.secondary.light}`,
+                boxShadow: "none",
+                color: "white",
+                filter: theme.filters.dropShadow,
+                height: "33px",
+                position: "relative",
+                "&::before": {
+                  content: '""',
+                  height: "28px",
+                  width: "2px",
+                  backgroundColor: theme.palette.secondary.light,
+                  position: "absolute",
+                  left: "-2px",
+                },
+                "&::after": {
+                  content: '""',
+                  height: "28px",
+                  width: "3px",
+                  backgroundColor: theme.palette.secondary.dark,
+                  position: "absolute",
+                  right: "-3px",
+                },
+                "&:hover": {
+                  filter: `${theme.filters.brightnessHover}`,
+                  backgroundColor: theme.palette.secondary.main,
+                  boxShadow: "none",
+                },
+                "&.Mui-disabled": {
+                  backgroundColor: theme.palette.secondary.main,
+                  filter: `${theme.filters.brightnessDisabled} ${theme.filters.dropShadow}`,
+                },
+              }),
+            },
+          },
+          MuiFilledInput: {
+            styleOverrides: {
+              root: ({ ownerState, theme }) => ({
+                borderRadius: "0px",
+                border: "6px solid transparent",
+                padding: "6px",
+                height: "60px",
+                borderImage:
+                  "url(https://firebasestorage.googleapis.com/v0/b/medabotsapp.appspot.com/o/textbox-border.png?alt=media&token=0895ec1f-b6bd-4f5f-8c53-9b8a82f3ad4b) 5 stretch",
+                borderImageOutset: "5px",
+                imageRendering: "pixelated",
+                backgroundColor: "#1a1f28", // TODO: Add color to palette
+                "&:hover": {
+                  backgroundColor: "#1a1f28",
+                },
+                "&:focus-within": {
+                  backgroundColor: "#1a1f28",
+                },
+              }),
+            },
+          },
         },
         filters: {
           dropShadow: "drop-shadow(0px 2px 0px #1a1f28)",
