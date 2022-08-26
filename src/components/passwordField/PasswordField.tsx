@@ -1,8 +1,8 @@
 import {
+  FilledInput,
   FormControl,
   FormHelperText,
   IconButton,
-  Input as MuiOutlinedInput,
   InputAdornment,
   InputLabel,
 } from "@mui/material";
@@ -54,15 +54,15 @@ export default function PasswordField({
         {label}
       </InputLabel>
 
-      <MuiOutlinedInput
-        sx={{
+      <FilledInput
+        /* sx={{
           border: "7.5px solid transparent",
           padding: "7.5px",
           borderImage:
             "url(https://firebasestorage.googleapis.com/v0/b/medabotsapp.appspot.com/o/textbox-border.png?alt=media&token=0895ec1f-b6bd-4f5f-8c53-9b8a82f3ad4b) 5 stretch",
           imageRendering: "pixelated",
           backgroundColor: "transparent",
-        }}
+        }} */
         fullWidth
         id={name}
         type={showPassword ? "text" : "password"}
