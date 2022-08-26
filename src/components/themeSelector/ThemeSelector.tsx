@@ -1,5 +1,3 @@
-import Brightness4Icon from "@mui/icons-material/Brightness4";
-import Brightness7Icon from "@mui/icons-material/Brightness7";
 import { Box, IconButton, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { useTranslation } from "react-i18next";
@@ -8,6 +6,7 @@ import {
   changeThemeMode,
   changeThemeStyle,
 } from "../managers/themeManager/themeManagerSlice";
+import PixelIcon from "../passwordField/pixelIcon/PixelIcon";
 
 export default function ThemeSelector() {
   const theme = useTheme();
@@ -34,9 +33,9 @@ export default function ThemeSelector() {
       </Typography>
       <IconButton sx={{ ml: 1 }} onClick={toggleThemeStyle} color="inherit">
         {theme.palette.mode === "dark" ? (
-          <Brightness7Icon />
+          <PixelIcon name="moon" />
         ) : (
-          <Brightness4Icon />
+          <PixelIcon name="sun-alt" />
         )}
       </IconButton>
     </Box>
