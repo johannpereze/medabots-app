@@ -6,7 +6,7 @@ import {
   changeThemeMode,
   changeThemeStyle,
 } from "../managers/themeManager/themeManagerSlice";
-import PixelIcon from "../passwordField/pixelIcon/PixelIcon";
+import PixelIcon from "../pixelIcon/PixelIcon";
 
 export default function ThemeSelector() {
   const theme = useTheme();

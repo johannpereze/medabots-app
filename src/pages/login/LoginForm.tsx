@@ -43,8 +43,8 @@ export default function LoginForm({ submit }: LoginFormProps) {
   });
 
   return (
-    <Box component="form" onSubmit={formik.handleSubmit}>
-      <Box sx={{ mt: 2, mb: 0 }}>
+    <Box sx={{ px: 1, py: 4 }} component="form" onSubmit={formik.handleSubmit}>
+      <Box>
         <TextField
           variant="filled"
           fullWidth
@@ -57,7 +57,7 @@ export default function LoginForm({ submit }: LoginFormProps) {
           helperText={formik.touched.email && formik.errors.email}
         />
       </Box>
-      <Box sx={{ mt: 2, mb: 0 }}>
+      <Box sx={{ mt: 2 }}>
         <PasswordField
           fullWidth
           name="password"
@@ -69,11 +69,19 @@ export default function LoginForm({ submit }: LoginFormProps) {
           helperText={formik.touched.password && formik.errors.password}
         />
       </Box>
+      <Typography
+        sx={{ display: "flex", justifyContent: "end", mt: 2, mb: 2 }}
+        variant="body2"
+      >
+        <Link component={NavLink} to="/login/password-recovery">
+          {t("login.forgot_password")}
+        </Link>
+      </Typography>
       <LoadingButton
         fullWidth
         type="submit"
         disabled={!formik.isValid || isAuthenticating}
-        sx={{ mt: 3 }}
+        sx={{ mt: 1 }}
         loading={isAuthenticating}
         variant="contained"
       >
@@ -86,21 +94,13 @@ export default function LoginForm({ submit }: LoginFormProps) {
         disabled={isAuthenticating}
         onClick={() => dispatch(startGoogleSignIn())}
         sx={{
-          mt: 1,
+          mt: 2,
         }}
         variant="contained"
         color="secondary"
       >
         {t("login.google_log_in")}
       </Button>
-      <Typography
-        sx={{ display: "flex", justifyContent: "end", mt: 2, mb: 1 }}
-        variant="body2"
-      >
-        <Link component={NavLink} to="/login/password-recovery">
-          {t("login.forgot_password")}
-        </Link>
-      </Typography>
     </Box>
   );
 }

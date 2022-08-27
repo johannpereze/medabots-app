@@ -1,12 +1,4 @@
-import {
-  Alert,
-  Box,
-  Button,
-  Grid,
-  Link,
-  Paper,
-  Typography,
-} from "@mui/material";
+import { Alert, Box, Button, Grid, Link, Typography } from "@mui/material";
 import { sendEmailVerification } from "firebase/auth";
 import { useSnackbar } from "notistack";
 import { useTranslation } from "react-i18next";
@@ -18,6 +10,7 @@ import {
   startCreatingUserWithEmail,
   startLoginWithEmail,
 } from "../../auth/authSlice";
+import IndustrialBox from "../../components/industrialBox/IndustrialBox";
 import IndustrialContainer from "../../components/industrialContainer/IndustrialContainer";
 import LanguageSelector from "../../components/languageSelector/LanguageSelector";
 import ThemeSelector from "../../components/themeSelector/ThemeSelector";
@@ -125,9 +118,7 @@ export default function Login({ step }: LoginProps) {
             </Button>
           )}
         </IndustrialContainer>
-        <Paper
-          elevation={0}
-          variant="outlined"
+        <IndustrialBox
           sx={{
             maxWidth: "80%",
             width: 350,
@@ -162,7 +153,7 @@ export default function Login({ step }: LoginProps) {
               </Link>
             </Typography>
           )}
-        </Paper>
+        </IndustrialBox>
       </Grid>
       <Grid
         item

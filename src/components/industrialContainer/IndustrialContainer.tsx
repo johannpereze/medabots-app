@@ -17,7 +17,7 @@ export default function IndustrialContainer({
         border: "10px solid",
         borderImage: `url(${imgUrl}) 10`,
         borderImageSlice: "10",
-        borderImageOutset: "1",
+        borderImageOutset: "0.2",
         imageRendering: "pixelated",
         backgroundColor: (theme) => theme.palette.background.paper,
         ...sx,

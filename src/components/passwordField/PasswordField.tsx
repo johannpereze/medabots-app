@@ -7,7 +7,7 @@ import {
   InputLabel,
 } from "@mui/material";
 import { ChangeEventHandler, FocusEvent, MouseEvent, useState } from "react";
-import PixelIcon from "./pixelIcon/PixelIcon";
+import PixelIcon from "../pixelIcon/PixelIcon";
 
 interface TextFieldProps {
   name: string;

@@ -13,6 +13,7 @@ import imgUrl from "../../../static/images/textbox-border.png";
 declare module "@mui/material/styles" {
   // eslint-disable-next-line no-unused-vars
   interface Theme {
+    customColors: string[];
     filters: {
       dropShadow: string;
       brightnessDisabled: string;
@@ -22,6 +23,7 @@ declare module "@mui/material/styles" {
   // allow configuration using `createTheme`
   // eslint-disable-next-line no-unused-vars
   interface ThemeOptions {
+    customColors?: string[];
     filters?: {
       dropShadow?: string;
       brightnessDisabled?: string;
@@ -49,6 +51,18 @@ export default function ThemeManager({ children }: ThemeManagerProps) {
   const customTheme = useMemo(
     () =>
       createTheme({
+        customColors: [
+          "#B2CBDC",
+          "#727C85",
+          "#677786",
+          "#4F5B67",
+          "#3F4952",
+          "#2C333A",
+          "#1A2027",
+          "#354450",
+          "#374048",
+          "#252E38",
+        ],
         typography: {
           fontFamily: ["Silkscreen"].join(","),
         },
@@ -149,7 +163,7 @@ export default function ThemeManager({ children }: ThemeManagerProps) {
           },
         },
         filters: {
-          dropShadow: "drop-shadow(0px 2px 0px #1a1f28)",
+          dropShadow: "drop-shadow(0px 2px 0px rgb(10.2, 12.5, 15.3))",
           brightnessDisabled: "brightness(60%)",
           brightnessHover: "brightness(80%)",
         },
