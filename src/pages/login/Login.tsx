@@ -88,9 +88,20 @@ export default function Login({ step }: LoginProps) {
           flexDirection: "column",
         }}
       >
-        <Typography variant="h5" sx={{ mt: 8, mb: 4 }}>
-          {t("general.login")}
-        </Typography>
+        <Box
+          sx={{
+            maxWidth: "90%",
+            width: 400,
+            mt: 6,
+            mb: 4,
+          }}
+        >
+          <img
+            style={{ imageRendering: "pixelated" }}
+            width="100%"
+            src="https://firebasestorage.googleapis.com/v0/b/medabotsapp.appspot.com/o/medabots_logo.png?alt=media&token=18d3d9a4-27fb-468e-813b-cb5807592f41"
+          />
+        </Box>
         <IndustrialContainer
           // elevation={4}
           sx={{
@@ -125,7 +136,7 @@ export default function Login({ step }: LoginProps) {
             display: "flex",
             justifyContent: "center",
             p: 2,
-            my: 1,
+            mt: 3,
           }}
         >
           {/* TODO: delete all confirmation code references */}
@@ -171,7 +182,14 @@ export default function Login({ step }: LoginProps) {
             mb: 10,
           }}
         >
-          <Grid container spacing={2}>
+          <Grid
+            container
+            spacing={2}
+            sx={{
+              display: "flex",
+              alignItems: "flex-end",
+            }}
+          >
             <Grid item xs={6}>
               <LanguageSelector />
             </Grid>

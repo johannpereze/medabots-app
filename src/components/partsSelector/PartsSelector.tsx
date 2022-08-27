@@ -120,7 +120,11 @@ export default function PartsSelector({ medaParts }: PartsSelectorProps) {
                   </IconButton>
                 </Grid>
                 <Grid item xs={8}>
-                  <Typography variant="h6" align="center">
+                  <Typography
+                    variant="body2"
+                    align="center"
+                    sx={{ fontSize: "16px" }}
+                  >
                     {partName}
                   </Typography>
                 </Grid>

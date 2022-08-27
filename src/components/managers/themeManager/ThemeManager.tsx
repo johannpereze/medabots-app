@@ -58,6 +58,7 @@ export default function ThemeManager({ children }: ThemeManagerProps) {
           "#4F5B67",
           "#3F4952",
           "#2C333A",
+          "#99A7B3",
           "#1A2027",
           "#354450",
           "#374048",
@@ -158,6 +159,23 @@ export default function ThemeManager({ children }: ThemeManagerProps) {
                 "&:focus-within": {
                   backgroundColor: "#1a1f28",
                 },
+              }),
+            },
+          },
+          MuiSelect: {
+            styleOverrides: {
+              standard: ({ ownerState, theme }) => ({
+                boxShadow: `0 2px ${theme.customColors[3]}, 0 -3px ${theme.customColors[1]}, 3px 0 ${theme.customColors[3]}, -2px 0 ${theme.customColors[1]}`,
+                filter: `${theme.filters.dropShadow}`,
+                backgroundColor: theme.customColors[6],
+                paddingTop: "17px",
+              }),
+            },
+          },
+          MuiInputBase: {
+            styleOverrides: {
+              input: ({ ownerState, theme }) => ({
+                paddingLeft: "20px",
               }),
             },
           },

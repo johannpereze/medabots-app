@@ -28,7 +28,7 @@ export default function ThemeSelector() {
         color: "text.primary",
       }}
     >
-      <Typography variant="body2">
+      <Typography variant="caption">
         {t(`general.${theme.palette.mode}_mode`)}
       </Typography>
       <IconButton sx={{ ml: 1 }} onClick={toggleThemeStyle} color="inherit">
