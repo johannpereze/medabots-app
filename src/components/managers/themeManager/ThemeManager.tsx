@@ -9,6 +9,7 @@ import {
 import { useMemo } from "react";
 import { useAppSelector } from "../../../app/hooks";
 import { RootState } from "../../../app/store";
+import imgUrl from "../../../static/images/textbox-border.png";
 declare module "@mui/material/styles" {
   // eslint-disable-next-line no-unused-vars
   interface Theme {
@@ -133,8 +134,7 @@ export default function ThemeManager({ children }: ThemeManagerProps) {
                 border: "6px solid transparent",
                 padding: "6px",
                 height: "60px",
-                borderImage:
-                  "url(https://firebasestorage.googleapis.com/v0/b/medabotsapp.appspot.com/o/textbox-border.png?alt=media&token=0895ec1f-b6bd-4f5f-8c53-9b8a82f3ad4b) 5 stretch",
+                borderImage: `url(${imgUrl}) 5 stretch`,
                 borderImageOutset: "5px",
                 imageRendering: "pixelated",
                 backgroundColor: "#1a1f28", // TODO: Add color to palette
