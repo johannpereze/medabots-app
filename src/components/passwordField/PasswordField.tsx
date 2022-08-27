@@ -50,7 +50,7 @@ export default function PasswordField({
 
   return (
     <FormControl fullWidth={fullWidth} variant="outlined">
-      <InputLabel error={error} htmlFor={name}>
+      <InputLabel variant="filled" error={error} htmlFor={name}>
         {label}
       </InputLabel>
 
@@ -91,7 +91,7 @@ export default function PasswordField({
         {...extraProps}
       />
       {error && (
-        <FormHelperText error>
+        <FormHelperText variant="filled" error>
           <>{helperText}</>
         </FormHelperText>
       )}

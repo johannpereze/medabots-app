@@ -18,7 +18,7 @@ import {
   startCreatingUserWithEmail,
   startLoginWithEmail,
 } from "../../auth/authSlice";
-import IndustrialBox from "../../components/industrialBox/IndustrialBox";
+import IndustrialContainer from "../../components/industrialContainer/IndustrialContainer";
 import LanguageSelector from "../../components/languageSelector/LanguageSelector";
 import ThemeSelector from "../../components/themeSelector/ThemeSelector";
 import errorHandler from "../../helpers/errorHandler";
@@ -98,7 +98,7 @@ export default function Login({ step }: LoginProps) {
         <Typography variant="h5" sx={{ mt: 8, mb: 4 }}>
           {t("general.login")}
         </Typography>
-        <IndustrialBox
+        <IndustrialContainer
           // elevation={4}
           sx={{
             maxWidth: "80%",
@@ -124,7 +124,7 @@ export default function Login({ step }: LoginProps) {
               {t("login.resend_confirmation_code")}
             </Button>
           )}
-        </IndustrialBox>
+        </IndustrialContainer>
         <Paper
           elevation={0}
           variant="outlined"
