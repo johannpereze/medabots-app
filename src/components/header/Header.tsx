@@ -1,9 +1,6 @@
-import AccountCircle from "@mui/icons-material/AccountCircle";
 import MenuIcon from "@mui/icons-material/Menu";
-import NotificationsIcon from "@mui/icons-material/Notifications";
 import { Divider, ListItemIcon, ListItemText } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
-import Badge from "@mui/material/Badge";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
@@ -14,6 +11,7 @@ import { KeyboardEvent, MouseEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useAppDispatch } from "../../app/hooks";
 import toggleMenuDrawer from "../../helpers/toggleMenuDrawer";
+import PixelIcon from "../pixelIcon/PixelIcon";
 
 export interface MenuItemType {
   label: string;
@@ -98,11 +96,11 @@ export default function Header({ menuItems, userName }: HeaderProps) {
 
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: "flex" }}>
-            <IconButton size="large" color="inherit">
+            {/* <IconButton size="large" color="inherit">
               <Badge badgeContent={0} color="error">
                 <NotificationsIcon />
               </Badge>
-            </IconButton>
+            </IconButton> */}
             <IconButton
               size="large"
               edge="end"
@@ -111,7 +109,7 @@ export default function Header({ menuItems, userName }: HeaderProps) {
               onClick={handleProfileMenuOpen}
               color="inherit"
             >
-              <AccountCircle />
+              <PixelIcon name="user" />
             </IconButton>
           </Box>
         </Toolbar>

@@ -1,15 +1,9 @@
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import {
-  Box,
-  Card,
-  CardContent,
-  Grid,
-  IconButton,
-  Typography,
-} from "@mui/material";
+import { Box, CardContent, Grid, IconButton, Typography } from "@mui/material";
 import { useState } from "react";
 import medaPartsDB, { Medabot, Medaparts } from "../../dataBase/medaParts";
+import IndustrialBox from "../industrialBox/IndustrialBox";
 import IndustrialContainer from "../industrialContainer/IndustrialContainer";
 import MedabotSprite from "../medabotSprite/MedabotSprite";
 
@@ -92,7 +86,7 @@ export default function PartsSelector({ medaParts }: PartsSelectorProps) {
   }; */
 
   return (
-    <Card
+    <IndustrialContainer
       sx={{
         display: "flex",
         my: 1,
@@ -100,9 +94,13 @@ export default function PartsSelector({ medaParts }: PartsSelectorProps) {
         p: 2,
       }}
     >
-      <IndustrialContainer>
+      <IndustrialBox
+        sx={{
+          p: 2,
+        }}
+      >
         <MedabotSprite scale={2} animated medaparts={medabot} />
-      </IndustrialContainer>
+      </IndustrialBox>
       <CardContent sx={{ p: 0 }}>
         <Box sx={{ display: "flex", flexDirection: "column" }}>
           <Grid container spacing={0}>
@@ -144,6 +142,6 @@ export default function PartsSelector({ medaParts }: PartsSelectorProps) {
           </Grid>
         </Box>
       </CardContent>
-    </Card>
+    </IndustrialContainer>
   );
 }

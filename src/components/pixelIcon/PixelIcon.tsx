@@ -77,7 +77,6 @@ export default function PixelIcon({ name, width = 30, style }: PixelIconProps) {
           />
         </svg>
       );
-
     case "info-box":
       return (
         <svg
@@ -89,6 +88,21 @@ export default function PixelIcon({ name, width = 30, style }: PixelIconProps) {
         >
           <path
             d="M3 3h2v18H3V3zm16 0H5v2h14v14H5v2h16V3h-2zm-8 6h2V7h-2v2zm2 8h-2v-6h2v6z"
+            fill="currentColor"
+          />
+        </svg>
+      );
+    case "user":
+      return (
+        <svg
+          fill="currentColor"
+          width={`${width}px`}
+          xmlns="http://www.w3.org/2000/svg"
+          style={style}
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M15 2H9v2H7v6h2V4h6V2zm0 8H9v2h6v-2zm0-6h2v6h-2V4zM4 16h2v-2h12v2H6v4h12v-4h2v6H4v-6z"
             fill="currentColor"
           />
         </svg>

@@ -68,6 +68,14 @@ export default function ThemeManager({ children }: ThemeManagerProps) {
           fontFamily: ["Silkscreen"].join(","),
         },
         components: {
+          MuiAppBar: {
+            styleOverrides: {
+              root: ({ ownerState, theme }) => ({
+                boxShadow: "none",
+                filter: theme.filters.dropShadow,
+              }),
+            },
+          },
           MuiButton: {
             styleOverrides: {
               containedPrimary: ({ ownerState, theme }) => ({
