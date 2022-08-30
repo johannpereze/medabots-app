@@ -165,9 +165,9 @@ export default function ThemeManager({ children }: ThemeManagerProps) {
           MuiSelect: {
             styleOverrides: {
               standard: ({ ownerState, theme }) => ({
-                boxShadow: `0 2px ${theme.customColors[3]}, 0 -3px ${theme.customColors[1]}, 3px 0 ${theme.customColors[3]}, -2px 0 ${theme.customColors[1]}`,
+                boxShadow: `0 2px ${theme.customColors[4]}, 0 -3px ${theme.customColors[1]}, 3px 0 ${theme.customColors[4]}, -2px 0 ${theme.customColors[1]}`,
                 filter: `${theme.filters.dropShadow}`,
-                backgroundColor: theme.customColors[6],
+                backgroundColor: theme.customColors[3],
                 paddingTop: "17px",
               }),
             },

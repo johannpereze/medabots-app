@@ -1,15 +1,10 @@
-import {
-  Alert,
-  Box,
-  Button,
-  Paper,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Alert, Box, Button, TextField, Typography } from "@mui/material";
 import { useFormik } from "formik";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
+import IndustrialBox from "../../components/industrialBox/IndustrialBox";
+import PixelIcon from "../../components/pixelIcon/PixelIcon";
 
 export default function RecoveryForm() {
   const [t] = useTranslation();
@@ -34,24 +29,28 @@ export default function RecoveryForm() {
   });
   return (
     <Box component="form" onSubmit={formik.handleSubmit}>
-      <Alert sx={{ mt: 2 }} severity="info">
+      <Alert
+        sx={{ mt: 2, borderRadius: 0 }}
+        severity="info"
+        icon={<PixelIcon name="info-box" />}
+      >
         {t("login.password_recovery")}
       </Alert>
-      <Paper
+      <IndustrialBox
         sx={{
           p: 2,
           mt: 2,
         }}
-        variant="outlined"
       >
         <Typography variant="body2">
           {t("login.instructions_will_be_sent")}
         </Typography>
-      </Paper>
-      <Box sx={{ mt: 2, mb: 0 }}>
+      </IndustrialBox>
+      <Box sx={{ mt: 3, mb: 0 }}>
         <TextField
           fullWidth
           name="email"
+          variant="filled"
           label={t("login.email")}
           value={formik.values.email}
           onChange={formik.handleChange}

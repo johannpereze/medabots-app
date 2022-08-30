@@ -99,11 +99,10 @@ export default function Login({ step }: LoginProps) {
           <img
             style={{ imageRendering: "pixelated" }}
             width="100%"
-            src="https://firebasestorage.googleapis.com/v0/b/medabotsapp.appspot.com/o/medabots_logo.png?alt=media&token=18d3d9a4-27fb-468e-813b-cb5807592f41"
+            src="https://firebasestorage.googleapis.com/v0/b/medabotsapp.appspot.com/o/medabots_app_logo.png?alt=media&token=b1ed49e2-fbcb-4f06-89c3-bd59649a1b01"
           />
         </Box>
         <IndustrialContainer
-          // elevation={4}
           sx={{
             maxWidth: "80%",
             width: 350,
