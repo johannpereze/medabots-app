@@ -41,7 +41,7 @@ interface Sprite {
   upperBody?: SpriteCoordinates;
 }
 
-interface Medaparts {
+export interface Medaparts {
   name: string;
   description: string;
   model: string;
@@ -68,7 +68,15 @@ export const metabee: Medabot = {
   legs: "ochitsuka",
 };
 
+export const tinpetMale: Medabot = {
+  head: "tinpet male head",
+  right: "tinpet male right arm",
+  left: "tinpet male left arm",
+  legs: "tinpet male legs",
+};
+
 const medaParts: Medaparts[] = [
+  // Metabee
   {
     name: "missile",
     description: "(Missile) 100% hit rate and chain reaction damage",
@@ -253,6 +261,195 @@ const medaParts: Medaparts[] = [
         y: 1064,
         top: 62,
         left: 9,
+        animation: 0,
+      },
+    },
+  },
+
+  // Tinpet
+  {
+    name: "tinpet male head",
+    description: "",
+    model: "",
+    part: "head",
+    skill: {
+      type: "",
+      description: "",
+    },
+    medal: "",
+    scope: "",
+    gender: "male",
+    stats: {
+      armor: 0,
+      success: 0,
+      power: 0,
+      uses: 0,
+    },
+    sprite: {
+      head: {
+        width: 19,
+        height: 18,
+        x: 849,
+        y: 114,
+        top: 12,
+        left: 11,
+        animation: 1,
+      },
+      upperBody: {
+        width: 16,
+        height: 14,
+        x: 848,
+        y: 92,
+        top: 29,
+        left: 11,
+        animation: 2,
+      },
+    },
+  },
+  {
+    name: "tinpet male right arm",
+    description: "",
+    model: "",
+    part: "right arm",
+    skill: {
+      type: "",
+      description: "",
+    },
+    medal: "",
+    scope: "",
+    gender: "male",
+    stats: {
+      armor: 0,
+      success: 0,
+      power: 0,
+      charge: 0,
+      radiation: 0,
+    },
+    sprite: {
+      upperArmRight: {
+        width: 16,
+        height: 21,
+        x: 865,
+        y: 98,
+        top: 24,
+        left: 0,
+        animation: 3,
+      },
+
+      lowerArmRight: {
+        width: 12,
+        height: 22,
+        x: 864,
+        y: 77,
+        top: 43,
+        left: 2,
+        animation: 5,
+      },
+    },
+  },
+  {
+    name: "tinpet male left arm",
+    description: "",
+    model: "",
+    part: "left arm",
+    skill: {
+      type: "",
+      description: "",
+    },
+    medal: "",
+    scope: "",
+    gender: "male",
+    stats: {
+      armor: 0,
+      success: 0,
+      power: 0,
+      charge: 0,
+      radiation: 0,
+    },
+    sprite: {
+      upperArmLeft: {
+        width: 10,
+        height: 15,
+        x: 831,
+        y: 94,
+        top: 28,
+        left: 22,
+        animation: 3,
+      },
+      lowerArmLeft: {
+        width: 17,
+        height: 19,
+        x: 824,
+        y: 77,
+        top: 43,
+        left: 29,
+        animation: 5,
+      },
+    },
+  },
+  {
+    name: "tinpet male legs",
+    description: "",
+    model: "",
+    part: "legs",
+    skill: {
+      type: "",
+    },
+    medal: "",
+    scope: "",
+    gender: "male",
+    stats: {
+      armor: 0,
+      propulsion: 0,
+      evasion: 0,
+      defense: 0,
+      proximity: 0,
+      remoteness: 0,
+    },
+    sprite: {
+      lowerBody: {
+        width: 16,
+        height: 11,
+        x: 848,
+        y: 75,
+        top: 43,
+        left: 11,
+        animation: 4,
+      },
+      upperLegLeft: {
+        width: 8,
+        height: 12,
+        x: 834,
+        y: 61,
+        top: 49,
+        left: 21,
+        animation: 1,
+      },
+      lowerLegLeft: {
+        width: 21,
+        height: 21,
+        x: 832,
+        y: 44,
+        top: 61,
+        left: 21,
+        animation: 0,
+      },
+      upperLegRight: {
+        width: 8,
+        height: 12,
+        x: 851,
+        y: 61,
+        top: 49,
+        left: 11,
+        animation: 1,
+      },
+      lowerLegRight: {
+        width: 16,
+        height: 22,
+        x: 853,
+        y: 44,
+        top: 61,
+        left: 11,
         animation: 0,
       },
     },

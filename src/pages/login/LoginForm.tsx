@@ -43,9 +43,10 @@ export default function LoginForm({ submit }: LoginFormProps) {
   });
 
   return (
-    <Box component="form" onSubmit={formik.handleSubmit}>
-      <Box sx={{ mt: 2, mb: 0 }}>
+    <Box sx={{ px: 1, py: 4 }} component="form" onSubmit={formik.handleSubmit}>
+      <Box>
         <TextField
+          variant="filled"
           fullWidth
           name="email"
           label={t("login.email")}
@@ -56,7 +57,7 @@ export default function LoginForm({ submit }: LoginFormProps) {
           helperText={formik.touched.email && formik.errors.email}
         />
       </Box>
-      <Box sx={{ mt: 2, mb: 0 }}>
+      <Box sx={{ mt: 2 }}>
         <PasswordField
           fullWidth
           name="password"
@@ -68,39 +69,38 @@ export default function LoginForm({ submit }: LoginFormProps) {
           helperText={formik.touched.password && formik.errors.password}
         />
       </Box>
-      <LoadingButton
-        fullWidth
-        variant="contained"
-        type="submit"
-        disabled={!formik.isValid || isAuthenticating}
-        sx={{ mt: 3 }}
-        loading={isAuthenticating}
-      >
-        {t("login.log_in")}
-      </LoadingButton>
-      <Button
-        fullWidth
-        startIcon={<Google />}
-        disabled={isAuthenticating}
-        onClick={() => dispatch(startGoogleSignIn())}
-        sx={{
-          textTransform: "none",
-          mt: 3,
-          color: "white",
-          backgroundColor: "#4285f4",
-        }}
-        variant="contained"
-      >
-        {t("login.log_in_with_google")}
-      </Button>
       <Typography
-        sx={{ display: "flex", justifyContent: "end", mt: 2, mb: 1 }}
+        sx={{ display: "flex", justifyContent: "end", mt: 2, mb: 2 }}
         variant="body2"
       >
         <Link component={NavLink} to="/login/password-recovery">
           {t("login.forgot_password")}
         </Link>
       </Typography>
+      <LoadingButton
+        fullWidth
+        type="submit"
+        disabled={!formik.isValid || isAuthenticating}
+        sx={{ mt: 1 }}
+        loading={isAuthenticating}
+        variant="contained"
+      >
+        {t("login.log_in")}
+      </LoadingButton>
+
+      <Button
+        fullWidth
+        startIcon={<Google />}
+        disabled={isAuthenticating}
+        onClick={() => dispatch(startGoogleSignIn())}
+        sx={{
+          mt: 2,
+        }}
+        variant="contained"
+        color="secondary"
+      >
+        {t("login.google_log_in")}
+      </Button>
     </Box>
   );
 }

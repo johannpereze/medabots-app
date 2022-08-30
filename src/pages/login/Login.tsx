@@ -1,12 +1,4 @@
-import {
-  Alert,
-  Box,
-  Button,
-  Grid,
-  Link,
-  Paper,
-  Typography,
-} from "@mui/material";
+import { Alert, Box, Button, Grid, Link, Typography } from "@mui/material";
 import { sendEmailVerification } from "firebase/auth";
 import { useSnackbar } from "notistack";
 import { useTranslation } from "react-i18next";
@@ -18,6 +10,8 @@ import {
   startCreatingUserWithEmail,
   startLoginWithEmail,
 } from "../../auth/authSlice";
+import IndustrialBox from "../../components/industrialBox/IndustrialBox";
+import IndustrialContainer from "../../components/industrialContainer/IndustrialContainer";
 import LanguageSelector from "../../components/languageSelector/LanguageSelector";
 import ThemeSelector from "../../components/themeSelector/ThemeSelector";
 import errorHandler from "../../helpers/errorHandler";
@@ -94,13 +88,23 @@ export default function Login({ step }: LoginProps) {
           flexDirection: "column",
         }}
       >
-        <Typography variant="h5" sx={{ mt: 8, mb: 4 }}>
-          {t("general.login")}
-        </Typography>
-        <Paper
-          elevation={4}
+        <Box
           sx={{
             maxWidth: "90%",
+            width: 400,
+            mt: 6,
+            mb: 4,
+          }}
+        >
+          <img
+            style={{ imageRendering: "pixelated" }}
+            width="100%"
+            src="https://firebasestorage.googleapis.com/v0/b/medabotsapp.appspot.com/o/medabots_app_logo.png?alt=media&token=b1ed49e2-fbcb-4f06-89c3-bd59649a1b01"
+          />
+        </Box>
+        <IndustrialContainer
+          sx={{
+            maxWidth: "80%",
             width: 350,
             display: "flex",
             flexDirection: "column",
@@ -123,17 +127,15 @@ export default function Login({ step }: LoginProps) {
               {t("login.resend_confirmation_code")}
             </Button>
           )}
-        </Paper>
-        <Paper
-          elevation={0}
-          variant="outlined"
+        </IndustrialContainer>
+        <IndustrialBox
           sx={{
-            maxWidth: "90%",
+            maxWidth: "80%",
             width: 350,
             display: "flex",
             justifyContent: "center",
             p: 2,
-            my: 1,
+            mt: 3,
           }}
         >
           {/* TODO: delete all confirmation code references */}
@@ -161,7 +163,7 @@ export default function Login({ step }: LoginProps) {
               </Link>
             </Typography>
           )}
-        </Paper>
+        </IndustrialBox>
       </Grid>
       <Grid
         item
@@ -175,11 +177,18 @@ export default function Login({ step }: LoginProps) {
         <Box
           sx={{
             width: 350,
-            maxWidth: "90%",
+            maxWidth: "80%",
             mb: 10,
           }}
         >
-          <Grid container spacing={2}>
+          <Grid
+            container
+            spacing={2}
+            sx={{
+              display: "flex",
+              alignItems: "flex-end",
+            }}
+          >
             <Grid item xs={6}>
               <LanguageSelector />
             </Grid>

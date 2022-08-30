@@ -58,13 +58,13 @@ const en = {
       for_safety_reasons_type_your_password_again_to_log_in:
         "For safety reasons type your password again to log in",
       go_back_to: "Go back to",
+      google_log_in: "Google Log In",
       i_accept: "I accept",
       incorrect_username_or_password: "Incorrect username or password",
       instructions_will_be_sent:
         "We will send to your inbox the instructions to reset your password",
       last_name: "Last name",
       log_in: "Log in",
-      log_in_with_google: "Log in with Google",
       name: "Name",
       not_registered: "Not registered?",
       password: "Password",

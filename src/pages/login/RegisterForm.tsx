@@ -126,6 +126,7 @@ export default function RegisterForm({ submit }: RegisterFormProps) {
         <TextField
           fullWidth
           name="firstName"
+          variant="filled"
           label={t("login.first_name")}
           value={formik.values.firstName}
           onChange={formik.handleChange}
@@ -138,6 +139,7 @@ export default function RegisterForm({ submit }: RegisterFormProps) {
         <TextField
           fullWidth
           name="lastName"
+          variant="filled"
           label={t("login.last_name")}
           value={formik.values.lastName}
           onChange={formik.handleChange}
@@ -150,6 +152,7 @@ export default function RegisterForm({ submit }: RegisterFormProps) {
         <TextField
           fullWidth
           name="email"
+          variant="filled"
           label={t("login.email")}
           value={formik.values.email}
           onChange={formik.handleChange}

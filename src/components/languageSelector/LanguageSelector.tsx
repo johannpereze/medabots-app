@@ -1,5 +1,6 @@
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { useTranslation } from "react-i18next";
+import PixelIcon from "../pixelIcon/PixelIcon";
 
 interface Lang {
   nativeName: string;
@@ -21,10 +22,15 @@ export default function LanguageSelector() {
   return (
     <>
       <FormControl fullWidth>
-        <InputLabel id="language-selector-select">
+        <InputLabel
+          variant="standard"
+          sx={{ top: 17, zIndex: 1, pl: 2 }}
+          id="language-selector-select"
+        >
           {t("general.language")}
         </InputLabel>
         <Select
+          variant="standard"
           labelId="language-selector-select"
           fullWidth
           size="small"
@@ -32,6 +38,16 @@ export default function LanguageSelector() {
           label="Language"
           value={i18n.resolvedLanguage}
           onChange={(e) => i18n.changeLanguage(e.target.value)}
+          IconComponent={() =>
+            PixelIcon({
+              name: "chevron-down",
+              style: {
+                position: "absolute",
+                right: "5",
+                pointerEvents: "none",
+              },
+            })
+          }
         >
           {Object.keys(lngs).map((lng) => (
             <MenuItem key={lng} value={lng}>

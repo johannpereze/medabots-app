@@ -1,13 +1,13 @@
-import { Visibility, VisibilityOff } from "@mui/icons-material";
 import {
+  FilledInput,
   FormControl,
   FormHelperText,
   IconButton,
   InputAdornment,
   InputLabel,
-  OutlinedInput as MuiOutlinedInput,
 } from "@mui/material";
 import { ChangeEventHandler, FocusEvent, MouseEvent, useState } from "react";
+import PixelIcon from "../pixelIcon/PixelIcon";
 
 interface TextFieldProps {
   name: string;
@@ -50,11 +50,19 @@ export default function PasswordField({
 
   return (
     <FormControl fullWidth={fullWidth} variant="outlined">
-      <InputLabel error={error} htmlFor={name}>
+      <InputLabel variant="filled" error={error} htmlFor={name}>
         {label}
       </InputLabel>
 
-      <MuiOutlinedInput
+      <FilledInput
+        /* sx={{
+          border: "7.5px solid transparent",
+          padding: "7.5px",
+          borderImage:
+            "url(https://firebasestorage.googleapis.com/v0/b/medabotsapp.appspot.com/o/textbox-border.png?alt=media&token=0895ec1f-b6bd-4f5f-8c53-9b8a82f3ad4b) 5 stretch",
+          imageRendering: "pixelated",
+          backgroundColor: "transparent",
+        }} */
         fullWidth
         id={name}
         type={showPassword ? "text" : "password"}
@@ -72,14 +80,18 @@ export default function PasswordField({
               onMouseDown={handleMouseDownPassword}
               edge="end"
             >
-              {showPassword ? <VisibilityOff /> : <Visibility />}
+              {showPassword ? (
+                <PixelIcon name="eye-closed" />
+              ) : (
+                <PixelIcon name="eye" />
+              )}
             </IconButton>
           </InputAdornment>
         }
         {...extraProps}
       />
       {error && (
-        <FormHelperText error>
+        <FormHelperText variant="filled" error>
           <>{helperText}</>
         </FormHelperText>
       )}
