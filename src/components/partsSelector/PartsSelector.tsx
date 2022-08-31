@@ -1,11 +1,9 @@
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import { Box, CardContent, Grid, IconButton, Typography } from "@mui/material";
+import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { useState } from "react";
 import medaPartsDB, { Medabot, Medaparts } from "../../dataBase/medaParts";
-import IndustrialBox from "../industrialBox/IndustrialBox";
-import IndustrialContainer from "../industrialContainer/IndustrialContainer";
+import IndustrialBoxDark from "../industrialBoxDark/IndustrialBoxDark";
 import MedabotSprite from "../medabotSprite/MedabotSprite";
+import PixelIcon from "../pixelIcon/PixelIcon";
 
 interface PartsSelectorProps {
   medaParts: Medabot;
@@ -13,6 +11,7 @@ interface PartsSelectorProps {
 
 export default function PartsSelector({ medaParts }: PartsSelectorProps) {
   const [medabot, setMedabot] = useState(medaParts);
+  const theme = useTheme();
 
   const getAvailableParts = (allParts: Medaparts[]) => {
     const availableParts: {
@@ -74,74 +73,57 @@ export default function PartsSelector({ medaParts }: PartsSelectorProps) {
   // console.log("availableParts", availableParts);
   console.log("medabot", medabot);
 
-  /*   const tinpetMale: Medabot = {
-    head: "tinpet male head",
-    right: "tinpet male right arm",
-    left: "tinpet male left arm",
-    legs: "tinpet male legs",
-  }; */
-
-  /*   const handlePartChange = (part: string) => {
-    setMedabot({ ...medabot, [part]: "missile" });
-  }; */
-
   return (
-    <IndustrialContainer
-      sx={{
-        display: "flex",
-        my: 1,
-        mx: 2,
-        p: 2,
-      }}
-    >
-      <IndustrialBox
+    <>
+      <Box
         sx={{
-          p: 2,
+          p: 3,
+          background: `linear-gradient( to bottom,  ${theme.customColors[1]}, ${theme.customColors[1]} 20%, ${theme.customColors[1]} 20%, ${theme.customColors[1]} 40%, ${theme.customColors[1]} 40%, ${theme.customColors[1]} 60%, ${theme.customColors[3]} 60%, ${theme.customColors[3]} 80%, ${theme.customColors[10]} 80%, ${theme.customColors[10]});`,
         }}
       >
-        <MedabotSprite scale={2} animated medaparts={medabot} />
-      </IndustrialBox>
-      <CardContent sx={{ p: 0 }}>
-        <Box sx={{ display: "flex", flexDirection: "column" }}>
-          <Grid container spacing={0}>
-            {Object.entries(medabot).map(([part, partName]) => (
-              <>
-                <Grid
-                  item
-                  xs={2}
-                  sx={{ display: "flex", justifyContent: "center" }}
-                >
-                  <IconButton>
-                    <ChevronLeftIcon
-                      onClick={() => handlePartChange(part, partName)}
-                    />
-                  </IconButton>
-                </Grid>
-                <Grid item xs={8}>
-                  <Typography
-                    variant="body2"
-                    align="center"
-                    sx={{ fontSize: "16px" }}
-                  >
-                    {partName}
-                  </Typography>
-                </Grid>
-                <Grid
-                  item
-                  xs={2}
-                  sx={{ display: "flex", justifyContent: "center" }}
-                >
-                  <IconButton>
-                    <ChevronRightIcon
-                      onClick={() => handlePartChange(part, partName)}
-                    />
-                  </IconButton>
-                </Grid>
-              </>
-            ))}
-          </Grid>
+        <Box sx={{ maxWidth: "400px", mx: "auto" }}>
+          <MedabotSprite scale={2} animated={true} medaparts={medabot} />
         </Box>
-      </CardContent>
-    </IndustrialContainer>
+      </Box>
+
+      <Box sx={{ py: 4, maxWidth: "450px", mx: "auto" }}>
+        {Object.entries(medabot).map(([part, partName]) => (
+          <Box
+            key={partName}
+            sx={{
+              display: "flex",
+              mx: 4,
+              my: 2,
+              justifyContent: "space-between",
+            }}
+          >
+            <IconButton onClick={() => handlePartChange(part, partName)}>
+              <PixelIcon name="chevron-left" />
+            </IconButton>
+            <IndustrialBoxDark
+              sx={{
+                width: 1,
+                mx: 2,
+                my: 1,
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Typography
+                variant="body2"
+                align="center"
+                sx={{ fontSize: partName.length > 12 ? "12px" : "16px" }}
+              >
+                {partName}
+              </Typography>
+            </IndustrialBoxDark>
+            <IconButton onClick={() => handlePartChange(part, partName)}>
+              <PixelIcon name="chevron-right" />
+            </IconButton>
+          </Box>
+        ))}
+      </Box>
+    </>
   );
 }

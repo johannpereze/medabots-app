@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { getCurrentUser } from "../auth/getCurrentUser";
+import { getCurrentUser } from "../auth/getCUrrentUser";
 import Backdrop from "../components/backdrop/Backdrop";
 
 interface PublicRouteProps {

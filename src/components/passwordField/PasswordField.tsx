@@ -79,6 +79,11 @@ export default function PasswordField({
               onClick={handleClickShowPassword}
               onMouseDown={handleMouseDownPassword}
               edge="end"
+              sx={{
+                backgroundColor: "transparent",
+                boxShadow: "none",
+                borderRadius: "50%",
+              }}
             >
               {showPassword ? (
                 <PixelIcon name="eye-closed" />

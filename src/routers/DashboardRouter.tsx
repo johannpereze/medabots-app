@@ -1,10 +1,10 @@
-import { ExitToApp, Extension } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
 import { Route, Routes } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { startLogout } from "../auth/authSlice";
 import Header, { MenuItemType } from "../components/header/Header";
 import MenuDrawer, { DrawerItem } from "../components/menuDrawer/MenuDrawer";
+import PixelIcon from "../components/pixelIcon/PixelIcon";
 import Home from "../pages/home/Home";
 
 export default function DashboardRouter() {
@@ -15,7 +15,7 @@ export default function DashboardRouter() {
   const menuItems: MenuItemType[] = [
     {
       label: "login.sign_out",
-      icon: <ExitToApp />,
+      icon: <PixelIcon name="logout" />,
       onClick: async () => await dispatch(startLogout()),
     },
   ];
@@ -24,7 +24,7 @@ export default function DashboardRouter() {
     {
       name: "module A",
       label: t("general.module_a"),
-      icon: <Extension />,
+      icon: <PixelIcon name="android" />,
       onClick: () => {},
     },
   ];

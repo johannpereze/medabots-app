@@ -16,6 +16,7 @@ declare module "@mui/material/styles" {
     customColors: string[];
     filters: {
       dropShadow: string;
+      dropShadowInverted: string;
       brightnessDisabled: string;
       brightnessHover: string;
     };
@@ -26,6 +27,7 @@ declare module "@mui/material/styles" {
     customColors?: string[];
     filters?: {
       dropShadow?: string;
+      dropShadowInverted?: string;
       brightnessDisabled?: string;
       brightnessHover?: string;
     };
@@ -63,6 +65,7 @@ export default function ThemeManager({ children }: ThemeManagerProps) {
           "#354450",
           "#374048",
           "#252E38",
+          "#151A1F",
         ],
         typography: {
           fontFamily: ["Silkscreen"].join(","),
@@ -150,6 +153,13 @@ export default function ThemeManager({ children }: ThemeManagerProps) {
               }),
             },
           },
+          MuiInputLabel: {
+            styleOverrides: {
+              filled: ({ ownerState, theme }) => ({
+                fontSize: "0.8rem",
+              }),
+            },
+          },
           MuiFilledInput: {
             styleOverrides: {
               root: ({ ownerState, theme }) => ({
@@ -157,6 +167,7 @@ export default function ThemeManager({ children }: ThemeManagerProps) {
                 border: "6px solid transparent",
                 padding: "6px",
                 height: "60px",
+                fontSize: "0.9rem",
                 borderImage: `url(${imgUrl}) 5 stretch`,
                 borderImageOutset: "5px",
                 imageRendering: "pixelated",
@@ -167,6 +178,34 @@ export default function ThemeManager({ children }: ThemeManagerProps) {
                 "&:focus-within": {
                   backgroundColor: "#1a1f28",
                 },
+                "&.Mui-disabled": {
+                  backgroundColor: "#1a1f28",
+                },
+              }),
+            },
+          },
+          MuiIconButton: {
+            styleOverrides: {
+              root: ({ ownerState, theme }) => ({
+                boxShadow: `0 2px ${theme.customColors[4]}, 0 -3px ${theme.customColors[1]}, 3px 0 ${theme.customColors[4]}, -2px 0 ${theme.customColors[1]}`,
+                filter: `${theme.filters.dropShadow}`,
+                backgroundColor: theme.customColors[3],
+                borderRadius: 0,
+                height: "40px",
+                width: "40px",
+                padding: 8,
+                margin: 0,
+                "&:hover": {
+                  filter: `${theme.filters.brightnessHover}`,
+                  backgroundColor: theme.customColors[3],
+                },
+              }),
+            },
+          },
+          MuiInputBase: {
+            styleOverrides: {
+              input: ({ ownerState, theme }) => ({
+                paddingLeft: "20px",
               }),
             },
           },
@@ -180,16 +219,10 @@ export default function ThemeManager({ children }: ThemeManagerProps) {
               }),
             },
           },
-          MuiInputBase: {
-            styleOverrides: {
-              input: ({ ownerState, theme }) => ({
-                paddingLeft: "20px",
-              }),
-            },
-          },
         },
         filters: {
-          dropShadow: "drop-shadow(0px 2px 0px rgb(10.2, 12.5, 15.3))",
+          dropShadow: `drop-shadow(0px 2px 0px #151A1F)`,
+          dropShadowInverted: "drop-shadow(0px -2px 0px rgb(10.2, 12.5, 15.3))",
           brightnessDisabled: "brightness(60%)",
           brightnessHover: "brightness(80%)",
         },

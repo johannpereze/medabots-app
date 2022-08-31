@@ -8,6 +8,51 @@ interface PixelIconProps {
 
 export default function PixelIcon({ name, width = 30, style }: PixelIconProps) {
   switch (name) {
+    case "android":
+      return (
+        <svg
+          width={`${width}px`}
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          style={style}
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M2 5h2v2H2V5zm4 4H4V7h2v2zm2 0H6v2H4v2H2v6h20v-6h-2v-2h-2V9h2V7h2V5h-2v2h-2v2h-2V7H8v2zm0 0h8v2h2v2h2v4H4v-4h2v-2h2V9zm2 4H8v2h2v-2zm4 0h2v2h-2v-2z"
+            fill="currentColor"
+          />
+        </svg>
+      );
+    case "chevron-left":
+      return (
+        <svg
+          width={`${width}px`}
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          style={style}
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M16 5v2h-2V5h2zm-4 4V7h2v2h-2zm-2 2V9h2v2h-2zm0 2H8v-2h2v2zm2 2v-2h-2v2h2zm0 0h2v2h-2v-2zm4 4v-2h-2v2h2z"
+            fill="currentColor"
+          />
+        </svg>
+      );
+    case "chevron-right":
+      return (
+        <svg
+          width={`${width}px`}
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          style={style}
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M8 5v2h2V5H8zm4 4V7h-2v2h2zm2 2V9h-2v2h2zm0 2h2v-2h-2v2zm-2 2v-2h2v2h-2zm0 0h-2v2h2v-2zm-4 4v-2h2v2H8z"
+            fill="currentColor"
+          />
+        </svg>
+      );
     case "eye":
       return (
         <svg
@@ -88,6 +133,22 @@ export default function PixelIcon({ name, width = 30, style }: PixelIconProps) {
         >
           <path
             d="M3 3h2v18H3V3zm16 0H5v2h14v14H5v2h16V3h-2zm-8 6h2V7h-2v2zm2 8h-2v-6h2v6z"
+            fill="currentColor"
+          />
+        </svg>
+      );
+
+    case "logout":
+      return (
+        <svg
+          fill="currentColor"
+          width={`${width}px`}
+          xmlns="http://www.w3.org/2000/svg"
+          style={style}
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M5 3h16v4h-2V5H5v14h14v-2h2v4H3V3h2zm16 8h-2V9h-2V7h-2v2h2v2H7v2h10v2h-2v2h2v-2h2v-2h2v-2z"
             fill="currentColor"
           />
         </svg>
