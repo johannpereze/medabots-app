@@ -10,7 +10,7 @@ const en = {
       save: "Save",
       terms_and_conditions: "Terms and conditions",
       user_settings: "User settings",
-      module_a: "Module A",
+      parts_creator: "Parts Creator",
     },
     errors: {
       email_not_verified: "Email not verified",
