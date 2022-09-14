@@ -49,7 +49,7 @@ export default function PartsSelector({ medaParts }: PartsSelectorProps) {
   const availableParts = getAvailableParts(medaPartsDB);
 
   const handlePartChange = (part: string, partName: string) => {
-    console.log(
+    /* console.log(
       "part",
       part,
       "partName",
@@ -58,7 +58,7 @@ export default function PartsSelector({ medaParts }: PartsSelectorProps) {
       availableParts[part as keyof typeof availableParts][
         availableParts.head.indexOf(partName) + 1
       ] || availableParts[part as keyof typeof availableParts][0]
-    );
+    ); */
     setMedabot({
       ...medabot,
       [part]:
@@ -71,7 +71,7 @@ export default function PartsSelector({ medaParts }: PartsSelectorProps) {
   };
 
   // console.log("availableParts", availableParts);
-  console.log("medabot", medabot);
+  // console.log("medabot", medabot);
 
   return (
     <>

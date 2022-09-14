@@ -1,4 +1,4 @@
-import { Box, BoxProps, styled, useTheme } from "@mui/material";
+import { Box, BoxProps, styled } from "@mui/material";
 
 export default function IndustrialBoxDark(props: BoxProps) {
   const MUIBox = styled(Box)<BoxProps>(({ theme }) => ({
@@ -22,9 +22,6 @@ export default function IndustrialBoxDark(props: BoxProps) {
       top: "-3px",
     },
   }));
-
-  const theme = useTheme();
-  console.log(theme);
 
   return <MUIBox {...props}>{props.children}</MUIBox>;
 }

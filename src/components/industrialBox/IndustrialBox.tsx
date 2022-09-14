@@ -1,4 +1,4 @@
-import { Box, BoxProps, styled, useTheme } from "@mui/material";
+import { Box, BoxProps, styled } from "@mui/material";
 
 export default function IndustrialBox(props: BoxProps) {
   const MUIBox = styled(Box)<BoxProps>(({ theme }) => ({
@@ -27,9 +27,6 @@ export default function IndustrialBox(props: BoxProps) {
       top: 0,
     },
   }));
-
-  const theme = useTheme();
-  console.log(theme);
 
   return <MUIBox {...props}>{props.children}</MUIBox>;
 }

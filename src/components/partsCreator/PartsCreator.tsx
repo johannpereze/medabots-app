@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import { Box, TextField } from "@mui/material";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import ReactJson from "react-json-view";
 import { Medabot, Medaparts } from "../../dataBase/medaParts";
 import { width as mainSpritesWidth } from "../../static/images/mainSprites.json";
@@ -293,8 +293,6 @@ export default function PartsCreator({
       (mp) => mp.name === _medaparts.right
     )[0].sprite.lowerArmRight; */
 
-    console.log(newSprite);
-
     const fullSprite: Sprite = newSprite;
 
     return fullSprite;
@@ -503,8 +501,6 @@ export default function PartsCreator({
     return meda;
   };
 
-  console.log(Object.keys(dbSpritePosition(medaPartsObject)));
-
   const [
     Head,
     UpperBody,
@@ -536,7 +532,7 @@ export default function PartsCreator({
   const medapartsArray = [
     {
       element: HeadPart,
-      name: "HeadPart",
+      name: "head",
       height: medaPartsObject.find((mp) => mp.part === "head")?.sprite.head
         ?.height,
       width: medaPartsObject.find((mp) => mp.part === "head")?.sprite.head
@@ -546,7 +542,7 @@ export default function PartsCreator({
     },
     {
       element: UpperBodyPart,
-      name: "UpperBodyPart",
+      name: "upperBody",
       height: medaPartsObject.find((mp) => mp.part === "head")?.sprite.upperBody
         ?.height,
       width: medaPartsObject.find((mp) => mp.part === "head")?.sprite.upperBody
@@ -556,7 +552,7 @@ export default function PartsCreator({
     },
     {
       element: LowerArmRightPart,
-      name: "LowerArmRightPart",
+      name: "lowerArmRight",
       height: medaPartsObject.find((mp) => mp.part === "right arm")?.sprite
         .lowerArmRight?.height,
       width: medaPartsObject.find((mp) => mp.part === "right arm")?.sprite
@@ -568,7 +564,7 @@ export default function PartsCreator({
     },
     {
       element: UpperArmRightPart,
-      name: "UpperArmRightPart",
+      name: "upperArmRight",
       height: medaPartsObject.find((mp) => mp.part === "right arm")?.sprite
         .upperArmRight?.height,
       width: medaPartsObject.find((mp) => mp.part === "right arm")?.sprite
@@ -580,7 +576,7 @@ export default function PartsCreator({
     },
     {
       element: LowerArmLeftPart,
-      name: "LowerArmLeftPart",
+      name: "lowerArmLeft",
       height: medaPartsObject.find((mp) => mp.part === "left arm")?.sprite
         .lowerArmLeft?.height,
       width: medaPartsObject.find((mp) => mp.part === "left arm")?.sprite
@@ -592,7 +588,7 @@ export default function PartsCreator({
     },
     {
       element: UpperArmLeftPart,
-      name: "UpperArmLeftPart",
+      name: "upperArmLeft",
       height: medaPartsObject.find((mp) => mp.part === "left arm")?.sprite
         .upperArmLeft?.height,
       width: medaPartsObject.find((mp) => mp.part === "left arm")?.sprite
@@ -604,7 +600,7 @@ export default function PartsCreator({
     },
     {
       element: LowerLegLeftPart,
-      name: "LowerLegLeftPart",
+      name: "lowerLegLeft",
       height: medaPartsObject.find((mp) => mp.part === "legs")?.sprite
         .lowerLegLeft?.height,
       width: medaPartsObject.find((mp) => mp.part === "legs")?.sprite
@@ -616,7 +612,7 @@ export default function PartsCreator({
     },
     {
       element: UpperLegLeftPart,
-      name: "UpperLegLeftPart",
+      name: "upperLegLeft",
       height: medaPartsObject.find((mp) => mp.part === "legs")?.sprite
         .upperLegLeft?.height,
       width: medaPartsObject.find((mp) => mp.part === "legs")?.sprite
@@ -628,7 +624,7 @@ export default function PartsCreator({
     },
     {
       element: UpperLegRightPart,
-      name: "UpperLegRightPart",
+      name: "upperLegRight",
       height: medaPartsObject.find((mp) => mp.part === "legs")?.sprite
         .upperLegRight?.height,
       width: medaPartsObject.find((mp) => mp.part === "legs")?.sprite
@@ -640,7 +636,7 @@ export default function PartsCreator({
     },
     {
       element: LowerLegRightPart,
-      name: "LowerLegRightPart",
+      name: "lowerLegRight",
       height: medaPartsObject.find((mp) => mp.part === "legs")?.sprite
         .lowerLegRight?.height,
       width: medaPartsObject.find((mp) => mp.part === "legs")?.sprite
@@ -652,7 +648,7 @@ export default function PartsCreator({
     },
     {
       element: LowerBodyPart,
-      name: "LowerBodyPart",
+      name: "lowerBody",
       height: medaPartsObject.find((mp) => mp.part === "legs")?.sprite.lowerBody
         ?.height,
       width: medaPartsObject.find((mp) => mp.part === "legs")?.sprite.lowerBody
@@ -661,6 +657,43 @@ export default function PartsCreator({
       y: medaPartsObject.find((mp) => mp.part === "legs")?.sprite.lowerBody?.y,
     },
   ];
+
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    param: "height" | "width",
+    partName: string
+  ) => {
+    console.log("New Value", e.target.value);
+    console.log("param", param);
+    console.log("partName", partName);
+
+    setMedaPartsObject((prev) => {
+      const newPrev: Medaparts[] = prev.map((pre) => {
+        if (pre.sprite[partName as keyof typeof pre.sprite]) {
+          console.log("ingreso con", pre);
+          let newPre: Medaparts = { ...pre };
+          newPre = {
+            ...pre,
+            sprite: {
+              ...pre.sprite,
+              [partName]: {
+                ...pre.sprite[partName as keyof typeof pre.sprite],
+                [param]: Number(e.target.value),
+                new: e.target.value,
+              },
+            },
+          };
+          console.log("newPre", newPre);
+          return newPre;
+        }
+        return pre;
+      });
+      //   const obj = [...prev];
+      //   obj.find((ob) => ob.sprite[partName as keyof typeof ob.sprite]);
+
+      return newPrev;
+    });
+  };
 
   return (
     <>
@@ -684,9 +717,8 @@ export default function PartsCreator({
         {LowerArmRight}
       </Box>
       {medapartsArray.map((mp) => (
-        <>
+        <Box key={`${mp.name}`}>
           <Box
-            key={`${mp.name}`}
             sx={{
               m: 2,
               position: "relative",
@@ -705,9 +737,14 @@ export default function PartsCreator({
               justifyContent: "space-between",
             }}
           >
-            <TextField label="height" value={mp.height} type="number" />
+            <TextField
+              label="height"
+              value={mp.height}
+              type="number"
+              onChange={(e) => handleChange(e, "height", mp.name)}
+            />
           </Box>
-        </>
+        </Box>
       ))}
       <Box sx={{ m: 2 }}>
         <ReactJson
