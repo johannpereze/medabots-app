@@ -171,7 +171,7 @@ export default function MedabotSprite({
 
         height: ${_spritePosition[key as keyof Sprite].height * scale}px;
         width: ${_spritePosition[key as keyof Sprite].width * scale}px;
-        background: url("https://firebasestorage.googleapis.com/v0/b/medabotsapp.appspot.com/o/main-sprites.png?alt=media&token=4430ae60-1d69-491a-80cd-160fdf585e3b")
+        background: url("https://firebasestorage.googleapis.com/v0/b/medabotsapp.appspot.com/o/main-spritesv2.png?alt=media&token=2c58ce34-7214-4a42-9f93-1737ff7b522a")
           ${_spritePosition[key as keyof Sprite].x * scale}px
           ${_spritePosition[key as keyof Sprite].y * scale}px;
         image-rendering: pixelated;

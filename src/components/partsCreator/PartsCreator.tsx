@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { Box, TextField } from "@mui/material";
+import { Box, Grid, TextField, Typography } from "@mui/material";
 import { ChangeEvent, useState } from "react";
 import ReactJson from "react-json-view";
 import { Medabot, Medaparts } from "../../dataBase/medaParts";
@@ -44,22 +44,22 @@ export default function PartsCreator({
 }: MedabotSpriteProps) {
   const [medaPartsObject, setMedaPartsObject] = useState<Medaparts[]>([
     {
-      name: "missile",
-      description: "(Missile) 100% hit rate and chain reaction damage",
-      model: "KBT-1",
+      name: String(Math.random()),
+      description: "xyz",
+      model: "xyz",
       part: "head",
       skill: {
-        type: "shoot",
-        description: "A normal shooting attack with no penalty afterwards.",
+        type: "xyz",
+        description: "xyz",
       },
-      medal: "shoot",
+      medal: "xyz",
       scope: "remoteness",
       gender: "male",
       stats: {
-        armor: 35,
-        success: 24,
-        power: 32,
-        uses: 4,
+        armor: 0,
+        success: 0,
+        power: 0,
+        uses: 0,
       },
       sprite: {
         head: {
@@ -83,23 +83,23 @@ export default function PartsCreator({
       },
     },
     {
-      name: "revolver",
-      description: "(Rifle) A quick CRG/RAD shooting attack.",
-      model: "KBT-1",
+      name: String(Math.random()),
+      description: "xyz",
+      model: "xyz",
       part: "right arm",
       skill: {
-        type: "shoot",
-        description: "A normal shooting attack with no penalty afterwards.",
+        type: "xyz",
+        description: "xyz",
       },
       medal: "shoot",
       scope: "remoteness",
       gender: "male",
       stats: {
-        armor: 30,
-        success: 36,
-        power: 19,
-        charge: 4,
-        radiation: 3,
+        armor: 0,
+        success: 0,
+        power: 0,
+        charge: 0,
+        radiation: 0,
       },
       sprite: {
         upperArmRight: {
@@ -124,24 +124,23 @@ export default function PartsCreator({
       },
     },
     {
-      name: "submachingun",
-      description: "(Chain Guin) A quick CRG/RAD shooting attack.",
-      model: "KBT-1",
+      name: String(Math.random()),
+      description: "xyz",
+      model: "xyz",
       part: "left arm",
       skill: {
-        type: "aim shot",
-        description:
-          "A shooting attack with high chance o a critical hit. Afterwards user cannot evade.",
+        type: "axyz",
+        description: "xyz",
       },
-      medal: "shoot",
+      medal: "xyz",
       scope: "remoteness",
       gender: "male",
       stats: {
-        armor: 30,
-        success: 10,
-        power: 36,
-        charge: 5,
-        radiation: 4,
+        armor: 0,
+        success: 0,
+        power: 0,
+        charge: 0,
+        radiation: 0,
       },
       sprite: {
         upperArmLeft: {
@@ -165,23 +164,23 @@ export default function PartsCreator({
       },
     },
     {
-      name: "ochitsuka",
-      description: 'Best when battling in "Grasslands" & "Forest" fields.',
-      model: "KBT-1",
+      name: String(Math.random()),
+      description: "xyz",
+      model: "xyz",
       part: "legs",
       skill: {
-        type: "two legged",
+        type: "xyz",
       },
-      medal: "shoot",
-      scope: "leg type marks",
+      medal: "xyz",
+      scope: "xyz",
       gender: "male",
       stats: {
-        armor: 45,
-        propulsion: 43,
-        evasion: 17,
-        defense: 42,
-        proximity: 10,
-        remoteness: 21,
+        armor: 0,
+        propulsion: 0,
+        evasion: 0,
+        defense: 0,
+        proximity: 0,
+        remoteness: 0,
       },
       sprite: {
         lowerBody: {
@@ -382,7 +381,7 @@ export default function PartsCreator({
 
         height: ${_spritePosition[key as keyof Sprite].height * scale}px;
         width: ${_spritePosition[key as keyof Sprite].width * scale}px;
-        background: url("https://firebasestorage.googleapis.com/v0/b/medabotsapp.appspot.com/o/main-sprites.png?alt=media&token=4430ae60-1d69-491a-80cd-160fdf585e3b")
+        background: url("https://firebasestorage.googleapis.com/v0/b/medabotsapp.appspot.com/o/main-spritesv2.png?alt=media&token=2c58ce34-7214-4a42-9f93-1737ff7b522a")
           ${_spritePosition[key as keyof Sprite].x * scale}px
           ${_spritePosition[key as keyof Sprite].y * scale}px;
         image-rendering: pixelated;
@@ -483,7 +482,7 @@ export default function PartsCreator({
 
         height: ${_spritePosition[key as keyof Sprite].height * scale}px;
         width: ${_spritePosition[key as keyof Sprite].width * scale}px;
-        background: url("https://firebasestorage.googleapis.com/v0/b/medabotsapp.appspot.com/o/main-sprites.png?alt=media&token=4430ae60-1d69-491a-80cd-160fdf585e3b")
+        background: url("https://firebasestorage.googleapis.com/v0/b/medabotsapp.appspot.com/o/main-spritesv2.png?alt=media&token=2c58ce34-7214-4a42-9f93-1737ff7b522a")
           ${_spritePosition[key as keyof Sprite].x * scale}px
           ${_spritePosition[key as keyof Sprite].y * scale}px;
         image-rendering: pixelated;
@@ -539,6 +538,8 @@ export default function PartsCreator({
         ?.width,
       x: medaPartsObject.find((mp) => mp.part === "head")?.sprite.head?.x,
       y: medaPartsObject.find((mp) => mp.part === "head")?.sprite.head?.y,
+      top: medaPartsObject.find((mp) => mp.part === "head")?.sprite.head?.top,
+      left: medaPartsObject.find((mp) => mp.part === "head")?.sprite.head?.left,
     },
     {
       element: UpperBodyPart,
@@ -549,6 +550,10 @@ export default function PartsCreator({
         ?.width,
       x: medaPartsObject.find((mp) => mp.part === "head")?.sprite.upperBody?.x,
       y: medaPartsObject.find((mp) => mp.part === "head")?.sprite.upperBody?.y,
+      top: medaPartsObject.find((mp) => mp.part === "head")?.sprite.upperBody
+        ?.top,
+      left: medaPartsObject.find((mp) => mp.part === "head")?.sprite.upperBody
+        ?.left,
     },
     {
       element: LowerArmRightPart,
@@ -561,6 +566,10 @@ export default function PartsCreator({
         .lowerArmRight?.x,
       y: medaPartsObject.find((mp) => mp.part === "right arm")?.sprite
         .lowerArmRight?.y,
+      top: medaPartsObject.find((mp) => mp.part === "right arm")?.sprite
+        .lowerArmRight?.top,
+      left: medaPartsObject.find((mp) => mp.part === "right arm")?.sprite
+        .lowerArmRight?.left,
     },
     {
       element: UpperArmRightPart,
@@ -573,6 +582,10 @@ export default function PartsCreator({
         .upperArmRight?.x,
       y: medaPartsObject.find((mp) => mp.part === "right arm")?.sprite
         .upperArmRight?.y,
+      top: medaPartsObject.find((mp) => mp.part === "right arm")?.sprite
+        .upperArmRight?.top,
+      left: medaPartsObject.find((mp) => mp.part === "right arm")?.sprite
+        .upperArmRight?.left,
     },
     {
       element: LowerArmLeftPart,
@@ -585,6 +598,10 @@ export default function PartsCreator({
         .lowerArmLeft?.x,
       y: medaPartsObject.find((mp) => mp.part === "left arm")?.sprite
         .lowerArmLeft?.y,
+      top: medaPartsObject.find((mp) => mp.part === "left arm")?.sprite
+        .lowerArmLeft?.top,
+      left: medaPartsObject.find((mp) => mp.part === "left arm")?.sprite
+        .lowerArmLeft?.left,
     },
     {
       element: UpperArmLeftPart,
@@ -597,6 +614,10 @@ export default function PartsCreator({
         .upperArmLeft?.x,
       y: medaPartsObject.find((mp) => mp.part === "left arm")?.sprite
         .upperArmLeft?.y,
+      top: medaPartsObject.find((mp) => mp.part === "left arm")?.sprite
+        .upperArmLeft?.top,
+      left: medaPartsObject.find((mp) => mp.part === "left arm")?.sprite
+        .upperArmLeft?.left,
     },
     {
       element: LowerLegLeftPart,
@@ -609,6 +630,10 @@ export default function PartsCreator({
         ?.x,
       y: medaPartsObject.find((mp) => mp.part === "legs")?.sprite.lowerLegLeft
         ?.y,
+      top: medaPartsObject.find((mp) => mp.part === "legs")?.sprite.lowerLegLeft
+        ?.top,
+      left: medaPartsObject.find((mp) => mp.part === "legs")?.sprite
+        .lowerLegLeft?.left,
     },
     {
       element: UpperLegLeftPart,
@@ -621,6 +646,10 @@ export default function PartsCreator({
         ?.x,
       y: medaPartsObject.find((mp) => mp.part === "legs")?.sprite.upperLegLeft
         ?.y,
+      top: medaPartsObject.find((mp) => mp.part === "legs")?.sprite.upperLegLeft
+        ?.top,
+      left: medaPartsObject.find((mp) => mp.part === "legs")?.sprite
+        .upperLegLeft?.left,
     },
     {
       element: UpperLegRightPart,
@@ -633,6 +662,10 @@ export default function PartsCreator({
         ?.x,
       y: medaPartsObject.find((mp) => mp.part === "legs")?.sprite.upperLegRight
         ?.y,
+      top: medaPartsObject.find((mp) => mp.part === "legs")?.sprite
+        .upperLegRight?.top,
+      left: medaPartsObject.find((mp) => mp.part === "legs")?.sprite
+        .upperLegRight?.left,
     },
     {
       element: LowerLegRightPart,
@@ -645,6 +678,10 @@ export default function PartsCreator({
         ?.x,
       y: medaPartsObject.find((mp) => mp.part === "legs")?.sprite.lowerLegRight
         ?.y,
+      top: medaPartsObject.find((mp) => mp.part === "legs")?.sprite
+        .lowerLegRight?.top,
+      left: medaPartsObject.find((mp) => mp.part === "legs")?.sprite
+        .lowerLegRight?.left,
     },
     {
       element: LowerBodyPart,
@@ -655,12 +692,16 @@ export default function PartsCreator({
         ?.width,
       x: medaPartsObject.find((mp) => mp.part === "legs")?.sprite.lowerBody?.x,
       y: medaPartsObject.find((mp) => mp.part === "legs")?.sprite.lowerBody?.y,
+      top: medaPartsObject.find((mp) => mp.part === "legs")?.sprite.lowerBody
+        ?.top,
+      left: medaPartsObject.find((mp) => mp.part === "legs")?.sprite.lowerBody
+        ?.left,
     },
   ];
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    param: "height" | "width",
+    param: "height" | "width" | "x" | "y" | "top" | "left",
     partName: string
   ) => {
     console.log("New Value", e.target.value);
@@ -679,7 +720,6 @@ export default function PartsCreator({
               [partName]: {
                 ...pre.sprite[partName as keyof typeof pre.sprite],
                 [param]: Number(e.target.value),
-                new: e.target.value,
               },
             },
           };
@@ -696,56 +736,108 @@ export default function PartsCreator({
   };
 
   return (
-    <>
-      <Box
-        sx={{
-          position: "relative",
-          height: spriteSize.height * scale,
-          width: spriteSize.width * scale,
-        }}
-      >
-        {LowerLegLeft}
-        {UpperArmLeft}
-        {LowerArmLeft}
-        {UpperLegLeft}
-        {LowerBody}
-        {UpperLegRight}
-        {LowerLegRight}
-        {UpperBody}
-        {Head}
-        {UpperArmRight}
-        {LowerArmRight}
-      </Box>
-      {medapartsArray.map((mp) => (
-        <Box key={`${mp.name}`}>
-          <Box
-            sx={{
-              m: 2,
-              position: "relative",
-              height: mp.height ? `${mp.height * scale}px` : `${30 * scale}px`,
-              width: mp.width ? `${mp.width * scale}px` : `${30 * scale}px`,
-              backgroundColor: "fuchsia",
-            }}
-          >
-            {mp.element}
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              mx: 4,
-              my: 2,
-              justifyContent: "space-between",
-            }}
-          >
-            <TextField
-              label="height"
-              value={mp.height}
-              type="number"
-              onChange={(e) => handleChange(e, "height", mp.name)}
-            />
-          </Box>
+    <Grid container>
+      <Grid item xs={12} md={6}>
+        <Box
+          sx={{
+            position: "relative",
+            height: spriteSize.height * scale,
+            width: spriteSize.width * scale,
+          }}
+        >
+          {LowerLegLeft}
+          {UpperArmLeft}
+          {LowerArmLeft}
+          {UpperLegLeft}
+          {LowerBody}
+          {UpperLegRight}
+          {LowerLegRight}
+          {UpperBody}
+          {Head}
+          {UpperArmRight}
+          {LowerArmRight}
         </Box>
-      ))}
+      </Grid>
+      <Grid item xs={12} md={6}>
+        <Box sx={{ height: "90vh", minHeight: "300px", overflow: "scroll" }}>
+          {medapartsArray.map((mp) => (
+            <Box key={`${mp.name}`}>
+              <Box
+                sx={{
+                  m: 2,
+                  position: "relative",
+                  height: mp.height
+                    ? `${mp.height * scale}px`
+                    : `${30 * scale}px`,
+                  width: mp.width ? `${mp.width * scale}px` : `${30 * scale}px`,
+                  backgroundColor: "fuchsia",
+                }}
+              >
+                {mp.element}
+              </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  mx: 4,
+                  my: 2,
+                  justifyContent: "space-between",
+                }}
+              >
+                <Typography>{mp.name}</Typography>
+                <TextField
+                  size="small"
+                  sx={{ mt: 2 }}
+                  label="height"
+                  value={mp.height}
+                  type="number"
+                  onChange={(e) => handleChange(e, "height", mp.name)}
+                />
+                <TextField
+                  size="small"
+                  sx={{ mt: 2 }}
+                  label="width"
+                  value={mp.width}
+                  type="number"
+                  onChange={(e) => handleChange(e, "width", mp.name)}
+                />
+                <TextField
+                  size="small"
+                  sx={{ mt: 2 }}
+                  label="x"
+                  value={mp.x}
+                  type="number"
+                  onChange={(e) => handleChange(e, "x", mp.name)}
+                />
+                <TextField
+                  size="small"
+                  sx={{ mt: 2 }}
+                  label="y"
+                  value={mp.y}
+                  type="number"
+                  onChange={(e) => handleChange(e, "y", mp.name)}
+                />
+                <TextField
+                  size="small"
+                  sx={{ mt: 2 }}
+                  label="top"
+                  value={mp.top}
+                  type="number"
+                  onChange={(e) => handleChange(e, "top", mp.name)}
+                />
+                <TextField
+                  size="small"
+                  sx={{ mt: 2 }}
+                  label="left"
+                  value={mp.left}
+                  type="number"
+                  onChange={(e) => handleChange(e, "left", mp.name)}
+                />
+              </Box>
+            </Box>
+          ))}
+        </Box>
+      </Grid>
       <Box sx={{ m: 2 }}>
         <ReactJson
           style={{ padding: "16px" }}
@@ -755,7 +847,7 @@ export default function PartsCreator({
           displayObjectSize={false}
         />
       </Box>
-    </>
+    </Grid>
   );
 }
 
