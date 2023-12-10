@@ -31,8 +31,8 @@ export default function LoginForm({ submit }: LoginFormProps) {
 
   const formik = useFormik({
     initialValues: {
-      email: searchParams.get("email") || "",
-      password: "",
+      email: searchParams.get("email") || "testmailjohann@gmail.com",
+      password: "TestPass1*",
     },
     validationSchema,
     onSubmit: (values) => {
