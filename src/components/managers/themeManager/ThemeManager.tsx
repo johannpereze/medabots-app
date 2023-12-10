@@ -68,7 +68,7 @@ export default function ThemeManager({ children }: ThemeManagerProps) {
           "#151A1F",
         ],
         typography: {
-          fontFamily: ["Silkscreen"].join(","),
+          fontFamily: ["Pixelify Sans"].join(","),
         },
         components: {
           MuiAppBar: {
